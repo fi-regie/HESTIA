@@ -3,2716 +3,937 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HESTIA - Gestion Réglementaire</title>
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Librairies pour export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    
-    <!-- Toastify pour notifications -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
+    <title>Les Tréteaux du Collet - Théâtre associatif en Cévennes</title>
     <style>
+        /* =========================================
+           VARIABLES & RESET
+           ========================================= */
         :root {
-            --primary-color: #0f766e;
-            --secondary-color: #3b82f6;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --bg-color: #f8fafc;
-            --text-color: #1e293b;
-            --card-bg: #ffffff;
-            --border-color: #e5e7eb;
+            --rose: #e6007e;
+            --rose-fonce: #b30062;
+            --vert: #4cd137;
+            --jaune: #fbc531;
+            --noir: #1e1e1e;
+            --gris-clair: #f4f4f4;
+            --blanc: #ffffff;
+            --texte: #333333;
+            --font-titre: 'Georgia', serif;
+            --font-texte: 'Helvetica Neue', Arial, sans-serif;
         }
-        
-        [data-theme="dark"] {
-            --primary-color: #2dd4bf;
-            --secondary-color: #60a5fa;
-            --success-color: #34d399;
-            --warning-color: #fbbf24;
-            --danger-color: #f87171;
-            --bg-color: #1e293b;
-            --text-color: #f1f5f9;
-            --card-bg: #334155;
-            --border-color: #475569;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        [data-theme="blue"] {
-            --primary-color: #3b82f6;
-            --secondary-color: #8b5cf6;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --bg-color: #eff6ff;
-            --text-color: #1e40af;
-            --card-bg: #ffffff;
-            --border-color: #bfdbfe;
-        }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s;
+            font-family: var(--font-texte);
+            color: var(--texte);
+            background-color: var(--blanc);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        
-        .navbar-brand {
-            font-weight: 700;
-            color: var(--primary-color) !important;
+
+        a {
+            text-decoration: none;
+            color: inherit;
         }
-        
-        .sidebar {
-            background: var(--card-bg);
-            border-right: 1px solid var(--border-color);
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding-top: 60px;
-            z-index: 1000;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-            transition: all 0.3s;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
-        
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            padding-top: 80px;
-            transition: margin-left 0.3s;
+
+        /* =========================================
+           TYPOGRAPHIE & UTILITAIRES
+           ========================================= */
+        h1, h2, h3, h4 {
+            font-family: var(--font-titre);
+            color: var(--noir);
+            margin-bottom: 1rem;
         }
-        
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-            color: var(--text-color);
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-color);
-            filter: brightness(90%);
-        }
-        
-        .stat-card {
-            border-left: 4px solid;
-            padding-left: 20px;
-        }
-        
-        .stat-card.success { border-left-color: var(--success-color); }
-        .stat-card.warning { border-left-color: var(--warning-color); }
-        .stat-card.danger { border-left-color: var(--danger-color); }
-        .stat-card.info { border-left-color: var(--secondary-color); }
-        
-        .nav-link.active {
-            background-color: rgba(var(--primary-color-rgb), 0.1);
-            color: var(--primary-color) !important;
-            border-left: 3px solid var(--primary-color);
-        }
-        
-        .table {
-            color: var(--text-color);
-        }
-        
-        .table-hover tbody tr:hover {
-            background-color: rgba(var(--primary-color-rgb), 0.05);
-        }
-        
-        .badge {
-            padding: 5px 10px;
-            font-weight: 500;
-        }
-        
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                width: 280px;
-            }
-            
-            .sidebar.mobile-open {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                margin-left: 0;
-                padding: 15px;
-                padding-top: 70px;
-            }
-            
-            .mobile-optimized {
-                padding: 10px !important;
-            }
-            
-            .mobile-card {
-                margin: 5px 0 !important;
-                border-radius: 10px !important;
-            }
-            
-            .mobile-table {
-                font-size: 13px;
-                display: block;
-                overflow-x: auto;
-            }
-            
-            .mobile-nav-bottom {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: var(--card-bg);
-                display: flex;
-                justify-content: space-around;
-                padding: 10px 5px;
-                box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-                z-index: 1000;
-                border-top: 1px solid var(--border-color);
-            }
-            
-            .mobile-nav-bottom .btn {
-                flex: 1;
-                margin: 0 2px;
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-            
-            .mobile-pull-refresh {
-                text-align: center;
-                padding: 10px;
-                color: var(--text-color);
-                opacity: 0.7;
-                font-size: 12px;
-            }
-        }
-        
-        /* Document Editor */
-        .document-editor {
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            background: var(--card-bg);
-        }
-        
-        .document-toolbar {
-            background: var(--bg-color);
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        
-        .document-content {
-            min-height: 300px;
-            padding: 20px;
-            outline: none;
-            color: var(--text-color);
-        }
-        
-        .document-content[placeholder]:empty:before {
-            content: attr(placeholder);
-            color: #6b7280;
-            pointer-events: none;
-        }
-        
-        /* Performance optimizations */
-        .lazy-load {
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .lazy-loaded {
-            opacity: 1;
-        }
-        
-        /* Theme switcher */
-        .theme-switcher {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        
-        /* Login overlay */
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-        
-        .login-container {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 400px;
-            width: 90%;
-            color: var(--text-color);
-        }
-        
-        /* Analytics dashboard */
-        .analytics-widget {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-        
-        /* Virtual scroll container */
-        .virtual-scroll-container {
-            height: 400px;
-            overflow-y: auto;
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
             position: relative;
         }
-        
-        .virtual-item {
-            position: absolute;
-            width: 100%;
-            padding: 15px;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--card-bg);
+
+        h2::after {
+            content: '★';
+            display: block;
+            color: var(--rose);
+            font-size: 1.5rem;
+            margin-top: 0.5rem;
         }
-        
-        /* Toast notifications */
-        .custom-toast {
-            background: var(--card-bg) !important;
-            color: var(--text-color) !important;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--danger-color);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 10px;
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-rose {
+            background-color: var(--rose);
+            color: var(--blanc);
+        }
+
+        .btn-rose:hover {
+            background-color: var(--rose-fonce);
+            transform: translateY(-2px);
+        }
+
+        .btn-jaune {
+            background-color: var(--jaune);
+            color: var(--noir);
+        }
+
+        .btn-jaune:hover {
+            background-color: #e1b12c;
+            transform: translateY(-2px);
+        }
+
+        .btn-vert {
+            background-color: var(--vert);
+            color: var(--noir);
+        }
+
+        .btn-vert:hover {
+            background-color: #3ea82b;
+            transform: translateY(-2px);
+        }
+
+        /* =========================================
+           HEADER & NAVIGATION
+           ========================================= */
+        header {
+            background-color: var(--noir);
+            color: var(--blanc);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-titre);
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--blanc);
+        }
+
+        .logo span {
+            color: var(--rose);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: var(--blanc);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--rose);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        .hero {
+            /* L'image de fond est le paysage du Collet */
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: center;
+            color: var(--blanc);
+            padding: 0 20px;
         }
-        
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+
+        .hero-content {
+            max-width: 800px;
         }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
+
+        .hero h1 {
+            font-size: 4rem;
+            color: var(--blanc);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color);
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* =========================================
+           SECTION PROGRAMMATION
+           ========================================= */
+        .programmation {
+            padding: 80px 0;
+            background-color: var(--gris-clair);
+        }
+
+        .mois-titre {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--rose);
+            margin: 40px 0 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .grille-evenements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .carte-event {
+            background: var(--blanc);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-top: 5px solid var(--rose);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carte-event:hover {
+            transform: translateY(-5px);
+        }
+
+        .carte-event img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background-color: #ddd; /* Placeholder */
+        }
+
+        .carte-event-contenu {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carte-event-date {
+            font-weight: bold;
+            color: var(--rose);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .carte-event-titre {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--noir);
+        }
+
+        .carte-event-desc {
+            font-size: 0.95rem;
+            color: #666;
+            flex-grow: 1;
+        }
+
+        .carte-event-tag {
+            display: inline-block;
+            background: var(--jaune);
+            color: var(--noir);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 10px;
+            align-self: flex-start;
+        }
+
+        /* =========================================
+           SECTION LE LIEU / HISTOIRE
+           ========================================= */
+        .le-lieu {
+            padding: 80px 0;
+            background-color: var(--blanc);
+        }
+
+        .le-lieu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .le-lieu-texte h3 {
+            font-size: 2rem;
+            color: var(--rose);
+            margin-bottom: 20px;
+        }
+
+        .le-lieu-texte p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .le-lieu-image img {
+            border-radius: 10px;
+            box-shadow: 10px 10px 0 var(--vert);
+        }
+
+        /* =========================================
+           SECTION PROJET / SOUTIEN
+           ========================================= */
+        .projet {
+            padding: 80px 0;
+            background-color: var(--noir);
+            color: var(--blanc);
+        }
+
+        .projet h2 {
+            color: var(--blanc);
+        }
+
+        .projet h2::after {
+            color: var(--jaune);
+        }
+
+        .projet-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .projet-texte h3 {
+            color: var(--jaune);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .projet-texte p {
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        .projet-texte ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .projet-texte ul li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .projet-texte ul li::before {
+            content: '→';
+            color: var(--vert);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .faq-box {
+            background: #2a2a2a;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid var(--rose);
+        }
+
+        .faq-box h4 {
+            color: var(--rose);
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .faq-box p {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .barre-progression {
+            background: #333;
+            border-radius: 20px;
+            height: 30px;
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .barre-remplie {
+            background: linear-gradient(90deg, var(--vert), var(--jaune));
+            height: 100%;
+            width: 15%; /* Exemple : 15 000 sur 137 000 */
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: var(--noir);
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: width 1s ease-in-out;
+        }
+
+        .frise {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #444;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .frise-item {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .frise-item span {
+            display: block;
+            font-weight: bold;
+            color: var(--rose);
+            margin-bottom: 5px;
+        }
+
+        .frise-item small {
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            background-color: #111;
+            color: #888;
+            padding: 50px 0 20px;
+            text-align: center;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .footer-col h4 {
+            color: var(--blanc);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-col p, .footer-col a {
+            margin-bottom: 10px;
+            display: block;
+            color: #aaa;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--rose);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 900px) {
+            .le-lieu-grid, .projet-grid {
+                grid-template-columns: 1fr;
+            }
+            .le-lieu-image {
+                order: -1;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+            nav {
+                display: none;
+                width: 100%;
+            }
+            nav.active {
+                display: block;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                padding-top: 15px;
+            }
+            .frise {
+                flex-direction: column;
+                gap: 30px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Login Overlay (s'affiche par défaut) -->
-    <div id="loginOverlay" class="login-overlay">
-        <div class="login-container">
-            <div class="text-center mb-4">
-                <i class="fas fa-fire fa-3x mb-3" style="color: var(--primary-color);"></i>
-                <h2>HESTIA</h2>
-                <p class="text-muted">Gestion réglementaire pour restaurateurs</p>
-            </div>
-            
-            <form id="loginForm">
-                <div class="mb-3">
-                    <label for="loginEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="loginEmail" required 
-                           placeholder="admin@hestia.fr">
-                </div>
-                <div class="mb-3">
-                    <label for="loginPassword" class="form-label">Mot de passe</label>
-                    <input type="password" class="form-control" id="loginPassword" required 
-                           placeholder="password123">
-                </div>
-                
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
-                </div>
-                
-                <button type="submit" class="btn btn-primary w-100 mb-3">
-                    <i class="fas fa-sign-in-alt me-2"></i>Se connecter
-                </button>
-                
-                <div class="text-center">
-                    <small class="text-muted">Comptes de démo :<br>
-                        admin@hestia.fr / password123<br>
-                        manager@hestia.fr / manager123<br>
-                        viewer@hestia.fr / viewer123
-                    </small>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- Navigation Principale -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" style="background: var(--card-bg);">
-        <div class="container-fluid">
-            <button class="btn btn-sm me-2 d-md-none" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <a class="navbar-brand" href="#" onclick="showSection('dashboard')">
-                <i class="fas fa-fire text-warning me-2"></i>
-                HESTIA
-                <small class="text-muted ms-2 d-none d-md-inline" id="userRoleBadge"></small>
-            </a>
-            
-            <div class="d-flex align-items-center">
-                <!-- Notifications -->
-                <div class="dropdown me-3 position-relative">
-                    <button class="btn btn-outline-secondary btn-sm position-relative" 
-                            onclick="toggleNotifications()">
-                        <i class="fas fa-bell"></i>
-                        <span id="notificationCount" class="notification-badge d-none">0</span>
-                    </button>
-                    <div id="notificationDropdown" class="dropdown-menu dropdown-menu-end p-0" 
-                         style="width: 300px; display: none;">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">Notifications</h6>
-                                <button class="btn btn-sm btn-outline-secondary" onclick="clearNotifications()">
-                                    Tout effacer
-                                </button>
-                            </div>
-                            <div class="list-group list-group-flush" id="notificationList" 
-                                 style="max-height: 300px; overflow-y: auto;">
-                                <!-- Notifications will be added here -->
-                            </div>
-                        </div>
+    <!-- ================= HEADER ================= -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">Les Tréteaux <span>du Collet</span></div>
+            <div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active')">☰</div>
+            <nav>
+                <ul>
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#programmation">Programmation</a></li>
+                    <li><a href="#le-lieu">Le Lieu</a></li>
+                    <li><a href="#projet">Soutenir le projet</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <section id="accueil" class="hero">
+        <div class="hero-content">
+            <h1>Un théâtre vivant en Cévennes</h1>
+            <p>Spectacles, rencontres et culture au cœur du mas du Collet à Concoules (30).</p>
+            <div class="hero-buttons">
+                <a href="#programmation" class="btn btn-rose">Voir la programmation</a>
+                <a href="#projet" class="btn btn-jaune">Soutenir le rachat</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PROGRAMMATION ================= -->
+    <section id="programmation" class="programmation">
+        <div class="container">
+            <h2>Programmation 2026</h2>
+            <p style="text-align: center; margin-bottom: 40px;">Retrouvez tous nos événements de juillet à octobre. Réservations au 06 37 93 88 37.</p>
+
+            <!-- Juillet -->
+            <h3 class="mois-titre">Juillet 2026</h3>
+            <div class="grille-evenements">
+                <div class="carte-event">
+                    <!-- Image de l'affiche Scène Ouverte -->
+                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Scene+Ouverte" alt="Affiche Scène Ouverte">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Vendredi 3 - 21h</div>
+                        <h4 class="carte-event-titre">Scène Ouverte</h4>
+                        <p class="carte-event-desc">10 minutes pour entrer dans l'histoire. Venez nombreux partager un moment unique.</p>
+                        <span class="carte-event-tag">Théâtre</span>
                     </div>
                 </div>
-                
-                <!-- User Menu -->
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" 
-                            data-bs-toggle="dropdown">
-                        <i class="fas fa-user me-1"></i>
-                        <span id="currentUserName"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#" onclick="showSection('profile')">
-                            <i class="fas fa-user-cog me-2"></i>Profil
-                        </a></li>
-                        <li><a class="dropdown-item" href="#" onclick="showSection('analytics')">
-                            <i class="fas fa-chart-bar me-2"></i>Analytiques
-                        </a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#" onclick="changeTheme()">
-                            <i class="fas fa-palette me-2"></i>Changer le thème
-                        </a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
-                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
-                        </a></li>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/1e1e1e/ffffff?text=Soiree+Esseirot" alt="Soirée Esseirot">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Samedi 4 - 21h</div>
+                        <h4 class="carte-event-titre">Soirée ESSEIROT</h4>
+                        <p class="carte-event-desc">Une soirée conviviale et culturelle à ne pas manquer.</p>
+                        <span class="carte-event-tag">Soirée</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/fbc531/1e1e1e?text=Fanfare" alt="Fanfare">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Mercredi 8 - 21h</div>
+                        <h4 class="carte-event-titre">Fanfare Le Grand Boucan</h4>
+                        <p class="carte-event-desc">Une fanfare explosive pour animer la soirée !</p>
+                        <span class="carte-event-tag">Musique</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Concert+Poetique" alt="Concert Poétique">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Vendredi 10 - 21h</div>
+                        <h4 class="carte-event-titre">Concert Poétique</h4>
+                        <p class="carte-event-desc">Un voyage entre mots et mélodies.</p>
+                        <span class="carte-event-tag">Concert</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Août -->
+            <h3 class="mois-titre">Août 2026</h3>
+            <div class="grille-evenements">
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/4cd137/1e1e1e?text=Triple+Scott" alt="Triple Scott">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Samedi 1er - 21h</div>
+                        <h4 class="carte-event-titre">Triple Scott</h4>
+                        <p class="carte-event-desc">Chanson française et jazz.</p>
+                        <span class="carte-event-tag">Concert</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/1e1e1e/ffffff?text=Paniyiri" alt="Paniyiri">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Mardi 4 - 21h</div>
+                        <h4 class="carte-event-titre">Paniyiri</h4>
+                        <p class="carte-event-desc">Musique grecque envoûtante.</p>
+                        <span class="carte-event-tag">Musique</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Duo+Zarico" alt="Duo Zarico">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Jeudi 6 - 21h</div>
+                        <h4 class="carte-event-titre">Duo Zarico</h4>
+                        <p class="carte-event-desc">Feel-good music pour se détendre.</p>
+                        <span class="carte-event-tag">Concert</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/fbc531/1e1e1e?text=Theatre+Forum" alt="Théâtre Forum">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Vendredi 14 - 20h</div>
+                        <h4 class="carte-event-titre">Zeuplèce to Death / Le Discours du Chef Seattle</h4>
+                        <p class="carte-event-desc">Clown puis causerie avec Eric Derrien.</p>
+                        <span class="carte-event-tag">Théâtre</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Septembre -->
+            <h3 class="mois-titre">Septembre 2026</h3>
+            <div class="grille-evenements">
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Scene+Ouverte" alt="Scène Ouverte">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Vendredi 4 - 20h30</div>
+                        <h4 class="carte-event-titre">Scène Ouverte</h4>
+                        <p class="carte-event-desc">10 minutes pour entrer dans l'histoire. Ouverture 19h.</p>
+                        <span class="carte-event-tag">Théâtre</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/4cd137/1e1e1e?text=Echecs" alt="Échecs">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Dimanche 6 - 17h</div>
+                        <h4 class="carte-event-titre">ÉCHECS</h4>
+                        <p class="carte-event-desc">Découverte, initiation, perfectionnement.</p>
+                        <span class="carte-event-tag">Atelier</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/1e1e1e/ffffff?text=Madame+Pan" alt="Madame Pan">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Vendredi 11 - 21h</div>
+                        <h4 class="carte-event-titre">Madame Pan et ses Troglydytes</h4>
+                        <p class="carte-event-desc">Théâtre. Coup de soutien aux Tréteaux.</p>
+                        <span class="carte-event-tag">Théâtre</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/fbc531/1e1e1e?text=Cine-Philo" alt="Ciné-Philo">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Mercredi 16 - 18h30</div>
+                        <h4 class="carte-event-titre">CINÉ-PHILO</h4>
+                        <p class="carte-event-desc">Film, débat et repas partagé.</p>
+                        <span class="carte-event-tag">Cinéma</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Jewa" alt="Jewa">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Samedi 19 - 21h</div>
+                        <h4 class="carte-event-titre">JEWA (rap-ragga)</h4>
+                        <p class="carte-event-desc">Concert. Énergie garantie !</p>
+                        <span class="carte-event-tag">Concert</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/4cd137/1e1e1e?text=Arpentage" alt="Arpentage">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Mercredi 23 - 18h-20h</div>
+                        <h4 class="carte-event-titre">ARPENTAGE du livre "Résister"</h4>
+                        <p class="carte-event-desc">Lecture collective de Salomé Saqué, suivie d'un repas partagé.</p>
+                        <span class="carte-event-tag">Rencontre</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Octobre -->
+            <h3 class="mois-titre">Octobre 2026</h3>
+            <div class="grille-evenements">
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Scene+Ouverte" alt="Scène Ouverte">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Vendredi 2 - 20h30</div>
+                        <h4 class="carte-event-titre">Scène Ouverte</h4>
+                        <p class="carte-event-desc">10 minutes pour entrer dans l'histoire.</p>
+                        <span class="carte-event-tag">Théâtre</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/1e1e1e/ffffff?text=Theatre+Forum" alt="Théâtre Forum">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Sam. 17 & Dim. 18</div>
+                        <h4 class="carte-event-titre">STAGE Théâtre-Forum</h4>
+                        <p class="carte-event-desc">Théâtre des Opprimés. Un outil de dialogue communautaire.</p>
+                        <span class="carte-event-tag">Stage</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/fbc531/1e1e1e?text=La+Question" alt="La Question">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Vendredi 9 - 19h</div>
+                        <h4 class="carte-event-titre">La question de la propriété</h4>
+                        <p class="carte-event-desc">Repas (sur réservation) + Film + Débat.</p>
+                        <span class="carte-event-tag">Débat</span>
+                    </div>
+                </div>
+                <div class="carte-event">
+                    <img src="https://via.placeholder.com/400x250/4cd137/1e1e1e?text=Chtologo" alt="Chtologo">
+                    <div class="carte-event-contenu">
+                        <div class="carte-event-date">Samedi 31 - 20h30</div>
+                        <h4 class="carte-event-titre">CHTOLÔGO</h4>
+                        <p class="carte-event-desc">Concert loufopoetikopolitik.</p>
+                        <span class="carte-event-tag">Concert</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= LE LIEU ================= -->
+    <section id="le-lieu" class="le-lieu">
+        <div class="container">
+            <h2>Le Lieu & son Histoire</h2>
+            <div class="le-lieu-grid">
+                <div class="le-lieu-texte">
+                    <h3>Un mas familial, un lieu culturel</h3>
+                    <p>Le Collet, c'est un mas familial qui est aussi depuis 15 ans un lieu culturel et de rencontre en Hautes Cévennes (les Tréteaux du Collet).</p>
+                    <p>Anne et Denis Coutaudier ont créé et animé pendant de nombreuses années cet endroit à part, un peu pirate et très libre. Des habitants de la vallée (et d'un peu plus loin) se plaisent à fréquenter cet espace atypique.</p>
+                    <p>Depuis 2025, l'association <strong>Les Amis des Tréteaux</strong> propose une programmation foisonnante : théâtre, ateliers, chorale, concerts, cinéma, jeux de société...</p>
+                    <p>Aujourd'hui, Le Collet est en vente. Un petit groupe d'habitants du coin souhaite que cet endroit perdure, fidèle à l'esprit qui l'anime depuis sa création.</p>
+                </div>
+                <div class="le-lieu-image">
+                    <!-- Image du mas / paysage -->
+                    <img src="https://images.unsplash.com/photo-1543872084-c7bd3822856f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Le mas du Collet dans les Cévennes">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PROJET / SOUTIEN ================= -->
+    <section id="projet" class="projet">
+        <div class="container">
+            <h2>Pour le Collet et des Tréteaux</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px; color: #ccc;">Pour que ce lieu vive, pour qu'il reste accessible à toutes et tous... Nous avons besoin de vous !</p>
+
+            <div class="projet-grid">
+                <div class="projet-texte">
+                    <h3>Le Projet</h3>
+                    <p><strong>Côté scène :</strong> permettre à l'association des Amis des Tréteaux de maintenir ses activités.</p>
+                    <p><strong>Côté mas :</strong> proposer plusieurs nouveaux logements. Denis, qui souhaite rester, pourra être locataire à vie sur les lieux.</p>
+                    <p><strong>Notre objectif :</strong> Récolter, sous forme de dons, la somme nécessaire pour acheter Le Collet en propriété collective. Cela se fera en deux temps :</p>
+                    <ul>
+                        <li>Mi-juillet 2026 : réunir 15.000€ pour la signature du compromis de vente. <span style="color: var(--vert); font-weight: bold;">FAIT !</span></li>
+                        <li>Septembre 2027 : rassembler 137.000€, prix d'achat du bien avec les frais.</li>
                     </ul>
+                    <p>On compte sur vous dès maintenant pour nous aider à réunir les fonds !</p>
+                    
+                    <div class="barre-progression">
+                        <div class="barre-remplie" style="width: 15%;">15 000 € / 137 000 €</div>
+                    </div>
+                    <p style="text-align: right; font-size: 0.9rem; color: var(--jaune);">Objectif : 137 000 € pour Septembre 2027</p>
+
+                    <h3 style="margin-top: 30px;">Comment puis-je donner ?</h3>
+                    <ul>
+                        <li>Via notre page HelloAsso : <a href="#" style="color: var(--vert); text-decoration: underline;">Lien vers la collecte</a></li>
+                        <li>En espèces ou chèque à l'ordre de : « association Les Communs de la Cèze ».</li>
+                        <li>Par virement (demandez-nous notre RIB).</li>
+                        <li>Par CB (terminal accessible aux Tréteaux).</li>
+                    </ul>
+                    <p><em>Les versements sont à faire auprès de l'un des membres fondateurs de l'association. Un reçu vous sera délivré en retour. Même un petit don, c'est beaucoup pour nous !</em></p>
+                </div>
+
+                <div class="faq-box">
+                    <h3 style="color: var(--rose); margin-bottom: 20px;">Foire Aux Questions</h3>
+                    
+                    <h4>Pourquoi ne pas faire un prêt bancaire ?</h4>
+                    <p>Parce que nous n'envisageons déjà de solliciter la banque lors de la 2nde phase du projet.</p>
+                    
+                    <h4>Que se passe-t-il si les dons ne suffisent pas ?</h4>
+                    <p>Notre plan B : des prêts à taux 0 auprès d'amis.</p>
+                    
+                    <h4>Que se passe-t-il si l'acquisition du Collet échoue ?</h4>
+                    <p>Si je souhaite être remboursé, je pourrai en faire la demande. Dans tous les cas : les frais déjà engagés sont couverts par les donateurs initiaux, membres fondateurs de l'association.</p>
+                    
+                    <h4>Comment puis-je m'impliquer autrement ?</h4>
+                    <p>En faisant passer le message autour de moi. Et en rejoignant les groupes de travail de l'association. Bienvenue !</p>
+                    
+                    <h4>Qu'est-ce que la propriété collective sans but lucratif ?</h4>
+                    <p>Elle désigne un bien qui appartient conjointement à un groupe de personnes plutôt qu'à un individu. Les membres de l'association, réunis en Assemblée Générale, sont responsables de la bonne administration du bien, décident des usages et garantissent qu'il ne soit pas revendu. Ce système s'oppose à la propriété privée et exclusive.</p>
+                </div>
+            </div>
+
+            <!-- Frise chronologique -->
+            <div class="frise">
+                <div class="frise-item">
+                    <span>1964</span>
+                    <small>Achat du Collet par la famille</small>
+                </div>
+                <div class="frise-item">
+                    <span>2011</span>
+                    <small>Installation de Denis et Anne</small>
+                </div>
+                <div class="frise-item">
+                    <span>2025</span>
+                    <small>Création de l'association Les Amis des Tréteaux</small>
+                </div>
+                <div class="frise-item">
+                    <span>Début 26</span>
+                    <small>Collecte de dons</small>
+                </div>
+                <div class="frise-item">
+                    <span>Juillet 26</span>
+                    <small>Signature du compromis (15 000 €) - FAIT</small>
+                </div>
+                <div class="frise-item">
+                    <span>Sept. 27</span>
+                    <small>Objectif : 137 000 € pour l'achat</small>
+                </div>
+                <div class="frise-item">
+                    <span>Mai 28</span>
+                    <small>Travaux Appart. 2</small>
                 </div>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <!-- Sidebar -->
-    <div class="sidebar w-250">
-        <div class="p-4">
-            <h5 class="text-muted mb-4">MENU PRINCIPAL</h5>
-            <ul class="nav flex-column">
-                <li class="nav-item mb-2">
-                    <a class="nav-link active" href="#" onclick="showSection('dashboard')">
-                        <i class="fas fa-chart-line me-2"></i> Tableau de bord
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link" href="#" onclick="showSection('establishments')">
-                        <i class="fas fa-store me-2"></i> Établissements
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link" href="#" onclick="showSection('compliance')">
-                        <i class="fas fa-clipboard-check me-2"></i> Conformité
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link" href="#" onclick="showSection('documents')">
-                        <i class="fas fa-file-alt me-2"></i> Documents
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link" href="#" onclick="showSection('alerts')">
-                        <i class="fas fa-bell me-2"></i> Alertes
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link" href="#" onclick="showSection('team')">
-                        <i class="fas fa-users me-2"></i> Équipe
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link" href="#" onclick="showSection('reports')">
-                        <i class="fas fa-chart-pie me-2"></i> Rapports
-                    </a>
-                </li>
-            </ul>
-            
-            <hr class="my-4">
-            
-            <div class="mt-4">
-                <h6 class="text-muted mb-3">Statut du projet</h6>
-                <div class="progress mb-3" style="height: 8px;">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
+    <!-- ================= FOOTER ================= -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Les Tréteaux du Collet</h4>
+                    <p>Un lieu culturel et de rencontre en Cévennes.</p>
+                    <p>Association Les Communs de la Cèze</p>
                 </div>
-                <small class="text-muted">25% complété - Semaine 2/8</small>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p>Lieu-dit "Le Collet"</p>
+                    <p>30450 Concoules, France</p>
+                    <a href="tel:0658871970">06 58 87 19 70</a>
+                    <a href="mailto:treteauxducollet@gmail.com">treteauxducollet@gmail.com</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Liens utiles</h4>
+                    <a href="#programmation">Programmation</a>
+                    <a href="#projet">Faire un don</a>
+                    <a href="https://www.helloasso.com" target="_blank">HelloAsso</a>
+                    <a href="#">Mentions légales</a>
+                </div>
             </div>
-            
-            <div class="mt-4">
-                <button class="btn btn-sm btn-outline-primary w-100 mb-2" onclick="exportAllData()">
-                    <i class="fas fa-download me-1"></i> Sauvegarder
-                </button>
-                <button class="btn btn-sm btn-outline-secondary w-100" onclick="importData()">
-                    <i class="fas fa-upload me-1"></i> Restaurer
-                </button>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Les Tréteaux du Collet. Tous droits réservés. | Imprimé par nos soins. Ne pas jeter sur la voie publique.</p>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <!-- Mobile Bottom Navigation -->
-    <div class="mobile-nav-bottom d-md-none">
-        <button class="btn btn-outline-primary" onclick="showSection('dashboard')">
-            <i class="fas fa-home"></i>
-        </button>
-        <button class="btn btn-outline-primary" onclick="showSection('establishments')">
-            <i class="fas fa-store"></i>
-        </button>
-        <button class="btn btn-outline-primary" onclick="showSection('documents')">
-            <i class="fas fa-file-alt"></i>
-        </button>
-        <button class="btn btn-outline-primary" onclick="showAddEstablishmentForm()">
-            <i class="fas fa-plus"></i>
-        </button>
-        <button class="btn btn-outline-primary" onclick="toggleNotifications()">
-            <i class="fas fa-bell"></i>
-        </button>
-    </div>
-
-    <!-- Contenu Principal -->
-    <div class="main-content">
-        
-        <!-- SECTION: TABLEAU DE BORD -->
-        <section id="dashboard" class="section">
-            <div class="mobile-pull-refresh d-md-none" id="pullRefresh">
-                <i class="fas fa-arrow-down"></i> Tirer pour rafraîchir
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0">Tableau de bord</h2>
-                <div class="btn-group">
-                    <button class="btn btn-outline-primary btn-sm" onclick="exportDashboardPDF()">
-                        <i class="fas fa-file-pdf me-1"></i> PDF
-                    </button>
-                    <button class="btn btn-outline-success btn-sm" onclick="exportDashboardCSV()">
-                        <i class="fas fa-file-csv me-1"></i> CSV
-                    </button>
-                    <button class="btn btn-primary btn-sm" onclick="showAddEstablishmentForm()">
-                        <i class="fas fa-plus me-1"></i> Nouvel établissement
-                    </button>
-                </div>
-            </div>
-
-            <!-- Cartes de statistiques -->
-            <div class="row mb-4">
-                <div class="col-md-3 mb-3">
-                    <div class="card stat-card success">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6 class="text-muted">Établissements</h6>
-                                    <h3 class="mb-0" id="statEstablishments">0</h3>
-                                </div>
-                                <i class="fas fa-store fa-2x text-success opacity-50"></i>
-                            </div>
-                            <p class="text-success mb-0 mt-2">
-                                <i class="fas fa-arrow-up me-1"></i>
-                                <span id="statNewEstablishments">0</span> nouveaux
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                    <div class="card stat-card warning">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6 class="text-muted">Conformité</h6>
-                                    <h3 class="mb-0" id="statCompliance">0%</h3>
-                                </div>
-                                <i class="fas fa-clipboard-check fa-2x text-warning opacity-50"></i>
-                            </div>
-                            <p class="text-warning mb-0 mt-2">
-                                <span id="statDocumentsToUpdate">0</span> documents à mettre à jour
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                    <div class="card stat-card danger">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6 class="text-muted">Alertes actives</h6>
-                                    <h3 class="mb-0" id="statAlerts">0</h3>
-                                </div>
-                                <i class="fas fa-bell fa-2x text-danger opacity-50"></i>
-                            </div>
-                            <p class="text-danger mb-0 mt-2">
-                                <span id="statUrgentAlerts">0</span> urgence(s) en cours
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                    <div class="card stat-card info">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6 class="text-muted">Membres d'équipe</h6>
-                                    <h3 class="mb-0" id="statTeamMembers">0</h3>
-                                </div>
-                                <i class="fas fa-users fa-2x text-info opacity-50"></i>
-                            </div>
-                            <p class="text-info mb-0 mt-2">
-                                <span id="statActiveUsers">0</span> connectés actuellement
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Graphiques avec lazy loading -->
-            <div class="row mb-4">
-                <div class="col-md-6 mb-3">
-                    <div class="card lazy-load" id="chartCompliance">
-                        <div class="card-body">
-                            <h5 class="card-title">Taux de conformité par type</h5>
-                            <canvas id="complianceChart" height="250"></canvas>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 mb-3">
-                    <div class="card lazy-load" id="chartAlerts">
-                        <div class="card-body">
-                            <h5 class="card-title">Évolution des alertes</h5>
-                            <canvas id="alertsChart" height="250"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Liste des établissements récents avec virtual scrolling -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Établissements récemment ajoutés</h5>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="refreshData()">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                </div>
-                <div class="card-body">
-                    <div class="virtual-scroll-container" id="virtualScrollContainer">
-                        <!-- Les éléments sont chargés dynamiquement -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: ÉTABLISSEMENTS -->
-        <section id="establishments" class="section" style="display: none;">
-            <h2 class="mb-4">Gestion des Établissements</h2>
-            
-            <div class="row mb-4">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="searchEstablishments" 
-                               placeholder="Rechercher un établissement..." oninput="filterEstablishments()">
-                        <button class="btn btn-outline-primary" type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-4 text-end">
-                    <button class="btn btn-primary me-2" onclick="showAddEstablishmentForm()">
-                        <i class="fas fa-plus me-1"></i> Ajouter
-                    </button>
-                    <button class="btn btn-outline-secondary" onclick="exportEstablishmentsCSV()">
-                        <i class="fas fa-download me-1"></i> Exporter
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive mobile-table">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Adresse</th>
-                                    <th>SIRET</th>
-                                    <th>Type</th>
-                                    <th>Capacité</th>
-                                    <th>Statut</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="establishmentsTable">
-                                <!-- Rempli par JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: DOCUMENTS -->
-        <section id="documents" class="section" style="display: none;">
-            <h2 class="mb-4">Gestion des Documents</h2>
-            
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="document-editor">
-                        <div class="document-toolbar">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('bold')">
-                                <i class="fas fa-bold"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('italic')">
-                                <i class="fas fa-italic"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('underline')">
-                                <i class="fas fa-underline"></i>
-                            </button>
-                            <div class="vr"></div>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertBulletList()">
-                                <i class="fas fa-list-ul"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertNumberedList()">
-                                <i class="fas fa-list-ol"></i>
-                            </button>
-                            <div class="vr"></div>
-                            <select class="form-select form-select-sm" style="width: auto;" onchange="formatHeading(this.value)">
-                                <option value="p">Paragraphe</option>
-                                <option value="h1">Titre 1</option>
-                                <option value="h2">Titre 2</option>
-                                <option value="h3">Titre 3</option>
-                            </select>
-                        </div>
-                        
-                        <div class="document-content" contenteditable="true" 
-                             placeholder="Rédigez votre document ici..." id="documentContent">
-                        </div>
-                        
-                        <div class="document-toolbar">
-                            <button class="btn btn-primary btn-sm" onclick="saveDocument()">
-                                <i class="fas fa-save me-1"></i> Enregistrer
-                            </button>
-                            <button class="btn btn-outline-secondary btn-sm" onclick="exportDocument()">
-                                <i class="fas fa-download me-1"></i> Télécharger
-                            </button>
-                            <button class="btn btn-outline-secondary btn-sm" onclick="printDocument()">
-                                <i class="fas fa-print me-1"></i> Imprimer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h6 class="mb-0">Documents sauvegardés</h6>
-                        </div>
-                        <div class="list-group list-group-flush" id="savedDocuments" 
-                             style="max-height: 400px; overflow-y: auto;">
-                            <!-- Documents sauvegardés -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: RAPPORTS -->
-        <section id="reports" class="section" style="display: none;">
-            <h2 class="mb-4">Rapports et Export</h2>
-            
-            <div class="row mb-4">
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
-                            <h5>Export PDF</h5>
-                            <p class="text-muted">Générer un rapport détaillé en PDF</p>
-                            <button class="btn btn-danger w-100" onclick="generateFullReportPDF()">
-                                <i class="fas fa-download me-1"></i> Générer PDF
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
-                            <h5>Export CSV</h5>
-                            <p class="text-muted">Exporter les données en format tableur</p>
-                            <button class="btn btn-success w-100" onclick="exportAllDataCSV()">
-                                <i class="fas fa-download me-1"></i> Exporter CSV
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
-                            <h5>Analytiques</h5>
-                            <p class="text-muted">Voir les statistiques détaillées</p>
-                            <button class="btn btn-primary w-100" onclick="showAnalyticsDashboard()">
-                                <i class="fas fa-chart-line me-1"></i> Voir les stats
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Historique des rapports</h5>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                    <th>Taille</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="reportHistory">
-                                <!-- Historique des rapports -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: ANALYTIQUES -->
-        <section id="analytics" class="section" style="display: none;">
-            <h2 class="mb-4">Analytiques et Métriques</h2>
-            
-            <div class="row mb-4">
-                <div class="col-md-3 mb-3">
-                    <div class="analytics-widget">
-                        <h6>Vues de page</h6>
-                        <h2 id="analyticsPageViews">0</h2>
-                        <small>Total depuis le début</small>
-                    </div>
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                    <div class="analytics-widget">
-                        <h6>Temps moyen</h6>
-                        <h2 id="analyticsAvgTime">0m</h2>
-                        <small>Par session</small>
-                    </div>
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                    <div class="analytics-widget">
-                        <h6>Établissements</h6>
-                        <h2 id="analyticsEstablishments">0</h2>
-                        <small>Ajoutés ce mois</small>
-                    </div>
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                    <div class="analytics-widget">
-                        <h6>Taux de rétention</h6>
-                        <h2 id="analyticsRetention">0%</h2>
-                        <small>Utilisateurs actifs</small>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Activité utilisateur</h5>
-                            <canvas id="userActivityChart" height="250"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Pages les plus visitées</h5>
-                            <ul class="list-group list-group-flush" id="topPagesList">
-                                <!-- Pages populaires -->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FORMULAIRE: AJOUT ÉTABLISSEMENT -->
-        <section id="addEstablishment" class="section" style="display: none;">
-            <div class="card">
-                <div class="card-header" style="background: var(--primary-color); color: white;">
-                    <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Nouvel Établissement</h5>
-                </div>
-                <div class="card-body">
-                    <form id="establishmentForm" onsubmit="return addEstablishment(event)">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label">Nom de l'établissement *</label>
-                                <input type="text" class="form-control" id="name" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="siret" class="form-label">Numéro SIRET *</label>
-                                <input type="text" class="form-control" id="siret" required>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="address" class="form-label">Adresse *</label>
-                                <input type="text" class="form-control" id="address" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="capacity" class="form-label">Capacité maximale *</label>
-                                <input type="number" class="form-control" id="capacity" required>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="erpType" class="form-label">Type d'ERP *</label>
-                                <select class="form-select" id="erpType" required>
-                                    <option value="">Sélectionnez...</option>
-                                    <option value="L">Type L</option>
-                                    <option value="N">Type N</option>
-                                    <option value="O">Type O</option>
-                                    <option value="P">Type P</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="manager" class="form-label">Responsable</label>
-                                <input type="text" class="form-control" id="manager">
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Notes supplémentaires</label>
-                            <textarea class="form-control" id="notes" rows="3"></textarea>
-                        </div>
-                        
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary" onclick="showSection('establishments')">
-                                <i class="fas fa-times me-1"></i> Annuler
-                            </button>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> Enregistrer
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- MODAL: DÉTAILS ÉTABLISSEMENT -->
-        <div class="modal fade" id="establishmentModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content" style="background: var(--card-bg); color: var(--text-color);">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Détails de l'établissement</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body" id="establishmentDetails">
-                        <!-- Rempli dynamiquement -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Theme Switcher Button -->
-    <div class="theme-switcher">
-        <button class="btn btn-primary rounded-circle p-3" onclick="changeTheme()" 
-                data-bs-toggle="tooltip" title="Changer le thème">
-            <i class="fas fa-palette"></i>
-        </button>
-    </div>
-
+    <!-- ================= SCRIPT ================= -->
     <script>
-        // ============================================
-        // 1. LOCALSTORAGE - Système de persistance
-        // ============================================
-        
-        class DataManager {
-            constructor() {
-                this.storageKeys = {
-                    establishments: 'hestia_establishments',
-                    team: 'hestia_team',
-                    documents: 'hestia_documents',
-                    notifications: 'hestia_notifications',
-                    analytics: 'hestia_analytics',
-                    user: 'hestia_user',
-                    theme: 'hestia_theme',
-                    reports: 'hestia_reports',
-                    savedDocs: 'hestia_saved_documents'
-                };
-            }
-            
-            save(key, data) {
-                try {
-                    localStorage.setItem(this.storageKeys[key], JSON.stringify(data));
-                    return true;
-                } catch (e) {
-                    console.error('Erreur de sauvegarde:', e);
-                    return false;
-                }
-            }
-            
-            load(key) {
-                try {
-                    const data = localStorage.getItem(this.storageKeys[key]);
-                    return data ? JSON.parse(data) : null;
-                } catch (e) {
-                    console.error('Erreur de chargement:', e);
-                    return null;
-                }
-            }
-            
-            clear(key) {
-                localStorage.removeItem(this.storageKeys[key]);
-            }
-            
-            exportAllData() {
-                const allData = {};
-                Object.keys(this.storageKeys).forEach(key => {
-                    allData[key] = this.load(key);
-                });
-                return JSON.stringify(allData, null, 2);
-            }
-            
-            importAllData(jsonData) {
-                try {
-                    const data = JSON.parse(jsonData);
-                    Object.keys(data).forEach(key => {
-                        if (data[key] && this.storageKeys[key]) {
-                            this.save(key, data[key]);
-                        }
+        // Smooth scrolling pour les ancres
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
-                    return true;
-                } catch (e) {
-                    console.error('Erreur d\'import:', e);
-                    return false;
+                    // Fermer le menu mobile après clic
+                    document.querySelector('nav').classList.remove('active');
                 }
-            }
-        }
-        
-        const dataManager = new DataManager();
-        
-        // ============================================
-        // 2. NOTIFICATIONS EN TEMPS RÉEL
-        // ============================================
-        
-        class NotificationSystem {
-            constructor() {
-                this.notifications = dataManager.load('notifications') || [];
-                this.maxNotifications = 50;
-                this.init();
-            }
-            
-            init() {
-                // Vérifier les documents expirés toutes les heures
-                setInterval(() => this.checkExpiringDocuments(), 3600000);
-                
-                // Vérifier les données toutes les 5 minutes
-                setInterval(() => this.checkDataHealth(), 300000);
-            }
-            
-            add(type, title, message, icon = 'info-circle', priority = 'normal') {
-                const notification = {
-                    id: Date.now(),
-                    type: type, // 'success', 'warning', 'danger', 'info'
-                    title: title,
-                    message: message,
-                    icon: icon,
-                    date: new Date().toISOString(),
-                    read: false,
-                    priority: priority
-                };
-                
-                this.notifications.unshift(notification);
-                
-                // Garder seulement les N dernières notifications
-                if (this.notifications.length > this.maxNotifications) {
-                    this.notifications = this.notifications.slice(0, this.maxNotifications);
-                }
-                
-                // Sauvegarder
-                dataManager.save('notifications', this.notifications);
-                
-                // Mettre à jour l'UI
-                this.updateUI();
-                
-                // Afficher une alerte toast
-                this.showToast(notification);
-                
-                return notification;
-            }
-            
-            showToast(notification) {
-                const typeMap = {
-                    'success': 'Succès',
-                    'warning': 'Attention',
-                    'danger': 'Urgent',
-                    'info': 'Information'
-                };
-                
-                Toastify({
-                    text: `${typeMap[notification.type]}: ${notification.title}`,
-                    duration: 5000,
-                    gravity: "top",
-                    position: "right",
-                    style: {
-                        background: notification.type === 'danger' ? '#ef4444' : 
-                                  notification.type === 'warning' ? '#f59e0b' : 
-                                  notification.type === 'success' ? '#10b981' : '#3b82f6',
-                        color: 'white',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                    },
-                    onClick: () => {
-                        this.markAsRead(notification.id);
-                        showNotificationDropdown();
-                    }
-                }).showToast();
-            }
-            
-            updateUI() {
-                const unreadCount = this.notifications.filter(n => !n.read).length;
-                const badge = document.getElementById('notificationCount');
-                const list = document.getElementById('notificationList');
-                
-                // Mettre à jour le badge
-                if (unreadCount > 0) {
-                    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
-                    badge.classList.remove('d-none');
-                } else {
-                    badge.classList.add('d-none');
-                }
-                
-                // Mettre à jour la liste
-                if (list) {
-                    list.innerHTML = this.notifications.slice(0, 10).map(notif => `
-                        <a href="#" class="list-group-item list-group-item-action ${!notif.read ? 'active' : ''}" 
-                           onclick="markNotificationAsRead(${notif.id})">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">
-                                    <i class="fas fa-${notif.icon} me-2 text-${notif.type}"></i>
-                                    ${notif.title}
-                                </h6>
-                                <small>${new Date(notif.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
-                            </div>
-                            <p class="mb-1 small">${notif.message}</p>
-                        </a>
-                    `).join('');
-                    
-                    if (this.notifications.length === 0) {
-                        list.innerHTML = '<div class="p-3 text-center text-muted">Aucune notification</div>';
-                    }
-                }
-            }
-            
-            markAsRead(id) {
-                const index = this.notifications.findIndex(n => n.id === id);
-                if (index !== -1) {
-                    this.notifications[index].read = true;
-                    dataManager.save('notifications', this.notifications);
-                    this.updateUI();
-                }
-            }
-            
-            markAllAsRead() {
-                this.notifications.forEach(n => n.read = true);
-                dataManager.save('notifications', this.notifications);
-                this.updateUI();
-            }
-            
-            clearAll() {
-                this.notifications = [];
-                dataManager.save('notifications', this.notifications);
-                this.updateUI();
-            }
-            
-            checkExpiringDocuments() {
-                // Simuler la vérification des documents expirés
-                const today = new Date();
-                const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-                
-                // Cette fonction serait normalement connectée à vos données réelles
-                const expiringDocs = 2; // Exemple
-                
-                if (expiringDocs > 0) {
-                    this.add('warning', 'Documents à renouveler', 
-                            `${expiringDocs} document(s) expire(nt) dans les 7 jours`, 
-                            'exclamation-triangle', 'high');
-                }
-            }
-            
-            checkDataHealth() {
-                // Vérifier l'état des données
-                const establishments = dataManager.load('establishments') || [];
-                const team = dataManager.load('team') || [];
-                
-                if (establishments.length === 0) {
-                    this.add('info', 'Données manquantes', 
-                            'Aucun établissement n\'a été ajouté', 
-                            'database', 'low');
-                }
-                
-                if (team.length < 2) {
-                    this.add('info', 'Équipe minimale', 
-                            'Seulement 1 membre dans l\'équipe', 
-                            'users', 'low');
-                }
-            }
-        }
-        
-        const notificationSystem = new NotificationSystem();
-        
-        // ============================================
-        // 3. AUTHENTIFICATION SIMPLE
-        // ============================================
-        
-        class AuthSystem {
-            constructor() {
-                this.currentUser = null;
-                this.users = dataManager.load('users') || [
-                    { 
-                        id: 1, 
-                        email: 'admin@hestia.fr', 
-                        password: 'password123', 
-                        role: 'admin',
-                        name: 'Administrateur',
-                        lastLogin: null
-                    },
-                    { 
-                        id: 2, 
-                        email: 'manager@hestia.fr', 
-                        password: 'manager123', 
-                        role: 'manager',
-                        name: 'Gestionnaire',
-                        lastLogin: null
-                    },
-                    { 
-                        id: 3, 
-                        email: 'viewer@hestia.fr', 
-                        password: 'viewer123', 
-                        role: 'viewer',
-                        name: 'Observateur',
-                        lastLogin: null
-                    }
-                ];
-                
-                this.init();
-            }
-            
-            init() {
-                // Vérifier si un utilisateur est déjà connecté
-                const savedUser = dataManager.load('user');
-                if (savedUser && savedUser.email) {
-                    const user = this.users.find(u => u.email === savedUser.email);
-                    if (user) {
-                        this.currentUser = user;
-                        this.showApp();
-                        return;
-                    }
-                }
-                
-                // Sinon, afficher le login
-                this.showLogin();
-            }
-            
-            login(email, password, rememberMe = false) {
-                const user = this.users.find(u => 
-                    u.email === email && u.password === password
-                );
-                
-                if (user) {
-                    this.currentUser = user;
-                    user.lastLogin = new Date().toISOString();
-                    
-                    if (rememberMe) {
-                        dataManager.save('user', { email: user.email });
-                    } else {
-                        dataManager.clear('user');
-                    }
-                    
-                    dataManager.save('users', this.users);
-                    
-                    // Enregistrer l'événement d'analytique
-                    analytics.trackEvent('user_login', { userId: user.id, role: user.role });
-                    
-                    // Ajouter une notification
-                    notificationSystem.add('success', 'Connexion réussie', 
-                        `Bienvenue ${user.name} !`, 'check-circle');
-                    
-                    this.showApp();
-                    return true;
-                }
-                
-                notificationSystem.add('danger', 'Échec de connexion', 
-                    'Email ou mot de passe incorrect', 'times-circle');
-                return false;
-            }
-            
-            logout() {
-                analytics.trackEvent('user_logout', { userId: this.currentUser.id });
-                
-                this.currentUser = null;
-                dataManager.clear('user');
-                this.showLogin();
-                
-                notificationSystem.add('info', 'Déconnexion', 
-                    'Vous avez été déconnecté avec succès', 'sign-out-alt');
-            }
-            
-            showLogin() {
-                document.getElementById('loginOverlay').style.display = 'flex';
-                document.querySelector('.main-content').style.display = 'none';
-                document.querySelector('.sidebar').style.display = 'none';
-                document.querySelector('.mobile-nav-bottom').style.display = 'none';
-                document.querySelector('.theme-switcher').style.display = 'none';
-            }
-            
-            showApp() {
-                document.getElementById('loginOverlay').style.display = 'none';
-                document.querySelector('.main-content').style.display = 'block';
-                document.querySelector('.sidebar').style.display = 'flex';
-                document.querySelector('.mobile-nav-bottom').style.display = 'flex';
-                document.querySelector('.theme-switcher').style.display = 'block';
-                
-                this.updateUI();
-                loadDashboard();
-            }
-            
-            updateUI() {
-                if (this.currentUser) {
-                    document.getElementById('currentUserName').textContent = this.currentUser.name;
-                    document.getElementById('userRoleBadge').textContent = 
-                        `(${this.currentUser.role === 'admin' ? 'Administrateur' : 
-                          this.currentUser.role === 'manager' ? 'Gestionnaire' : 'Observateur'})`;
-                    
-                    // Ajuster les permissions
-                    this.adjustPermissions();
-                }
-            }
-            
-            adjustPermissions() {
-                const isAdmin = this.currentUser.role === 'admin';
-                const isManager = this.currentUser.role === 'manager';
-                
-                // Cacher les éléments selon le rôle
-                document.querySelectorAll('.admin-only').forEach(el => {
-                    el.style.display = isAdmin ? '' : 'none';
-                });
-                
-                document.querySelectorAll('.manager-only').forEach(el => {
-                    el.style.display = isAdmin || isManager ? '' : 'none';
-                });
-            }
-            
-            checkPermission(requiredRole) {
-                if (!this.currentUser) return false;
-                
-                const roleHierarchy = {
-                    'viewer': 1,
-                    'manager': 2,
-                    'admin': 3
-                };
-                
-                return roleHierarchy[this.currentUser.role] >= roleHierarchy[requiredRole];
-            }
-        }
-        
-        const authSystem = new AuthSystem();
-        
-        // ============================================
-        // 4. ANALYTIQUES ET MÉTRIQUES
-        // ============================================
-        
-        class AnalyticsSystem {
-            constructor() {
-                this.metrics = dataManager.load('analytics') || {
-                    pageViews: {},
-                    events: [],
-                    sessions: [],
-                    userActivity: {},
-                    startDate: new Date().toISOString()
-                };
-                
-                this.currentSession = {
-                    startTime: Date.now(),
-                    currentPage: 'dashboard',
-                    pageViews: []
-                };
-                
-                this.init();
-            }
-            
-            init() {
-                // Démarrer le suivi de session
-                this.startSession();
-                
-                // Sauvegarder périodiquement
-                setInterval(() => this.save(), 30000);
-                
-                // Suivre les changements de page
-                window.addEventListener('hashchange', () => {
-                    this.trackPageView(window.location.hash.substring(1) || 'dashboard');
-                });
-                
-                // Suivre le temps sur la page
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) {
-                        this.currentSession.endTime = Date.now();
-                    } else {
-                        this.currentSession.startTime = Date.now();
-                    }
-                });
-            }
-            
-            startSession() {
-                this.currentSession = {
-                    startTime: Date.now(),
-                    currentPage: 'dashboard',
-                    pageViews: [],
-                    userId: authSystem.currentUser ? authSystem.currentUser.id : null
-                };
-            }
-            
-            endSession() {
-                if (this.currentSession) {
-                    this.currentSession.endTime = Date.now();
-                    this.metrics.sessions.push({
-                        ...this.currentSession,
-                        duration: this.currentSession.endTime - this.currentSession.startTime
-                    });
-                    this.save();
-                }
-            }
-            
-            trackPageView(pageName) {
-                if (!this.currentSession) return;
-                
-                const now = Date.now();
-                const timeOnPreviousPage = this.currentSession.currentPage ? 
-                    now - (this.currentSession.pageViews[this.currentSession.pageViews.length - 1]?.timestamp || now) : 0;
-                
-                this.currentSession.pageViews.push({
-                    page: pageName,
-                    timestamp: now,
-                    duration: timeOnPreviousPage
-                });
-                
-                this.currentSession.currentPage = pageName;
-                
-                // Mettre à jour les métriques de page
-                if (!this.metrics.pageViews[pageName]) {
-                    this.metrics.pageViews[pageName] = 0;
-                }
-                this.metrics.pageViews[pageName]++;
-                
-                // Mettre à jour l'activité utilisateur
-                const today = new Date().toDateString();
-                if (!this.metrics.userActivity[today]) {
-                    this.metrics.userActivity[today] = 0;
-                }
-                this.metrics.userActivity[today]++;
-                
-                this.updateDashboard();
-            }
-            
-            trackEvent(eventName, data = {}) {
-                const event = {
-                    name: eventName,
-                    timestamp: new Date().toISOString(),
-                    data: data,
-                    userId: authSystem.currentUser ? authSystem.currentUser.id : null,
-                    page: this.currentSession.currentPage
-                };
-                
-                this.metrics.events.push(event);
-                
-                // Limiter la taille du tableau d'événements
-                if (this.metrics.events.length > 1000) {
-                    this.metrics.events = this.metrics.events.slice(-500);
-                }
-                
-                return event;
-            }
-            
-            save() {
-                dataManager.save('analytics', this.metrics);
-            }
-            
-            getSummary() {
-                const totalPageViews = Object.values(this.metrics.pageViews).reduce((a, b) => a + b, 0);
-                const totalSessions = this.metrics.sessions.length;
-                const avgSessionDuration = totalSessions > 0 ? 
-                    this.metrics.sessions.reduce((a, b) => a + b.duration, 0) / totalSessions : 0;
-                
-                // Calculer la rétention (utilisateurs actifs aujourd'hui)
-                const today = new Date().toDateString();
-                const yesterday = new Date(Date.now() - 86400000).toDateString();
-                const todayActive = this.metrics.userActivity[today] || 0;
-                const yesterdayActive = this.metrics.userActivity[yesterday] || 0;
-                const retention = yesterdayActive > 0 ? (todayActive / yesterdayActive * 100) : 0;
-                
-                return {
-                    totalPageViews,
-                    totalSessions,
-                    avgSessionDuration: Math.round(avgSessionDuration / 60000), // en minutes
-                    retention: Math.min(100, Math.round(retention)),
-                    activeToday: todayActive
-                };
-            }
-            
-            getTopPages(limit = 5) {
-                return Object.entries(this.metrics.pageViews)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, limit)
-                    .map(([page, views]) => ({ page, views }));
-            }
-            
-            updateDashboard() {
-                const summary = this.getSummary();
-                
-                document.getElementById('analyticsPageViews').textContent = 
-                    summary.totalPageViews.toLocaleString();
-                document.getElementById('analyticsAvgTime').textContent = 
-                    `${summary.avgSessionDuration}m`;
-                document.getElementById('analyticsRetention').textContent = 
-                    `${summary.retention}%`;
-                
-                // Mettre à jour la liste des pages populaires
-                const topPagesList = document.getElementById('topPagesList');
-                if (topPagesList) {
-                    const topPages = this.getTopPages();
-                    topPagesList.innerHTML = topPages.map(item => `
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            ${item.page}
-                            <span class="badge bg-primary rounded-pill">${item.views}</span>
-                        </li>
-                    `).join('');
-                }
-            }
-            
-            generateReport() {
-                const summary = this.getSummary();
-                const topPages = this.getTopPages(10);
-                const recentEvents = this.metrics.events.slice(-20);
-                
-                return {
-                    period: {
-                        start: this.metrics.startDate,
-                        end: new Date().toISOString()
-                    },
-                    summary,
-                    topPages,
-                    recentEvents,
-                    userCount: authSystem.users.length
-                };
-            }
-        }
-        
-        const analytics = new AnalyticsSystem();
-        
-        // ============================================
-        // 5. THÈMES ET PERSONNALISATION
-        // ============================================
-        
-        class ThemeManager {
-            constructor() {
-                this.themes = {
-                    light: {
-                        name: 'Clair',
-                        colors: {
-                            '--primary-color': '#0f766e',
-                            '--secondary-color': '#3b82f6',
-                            '--success-color': '#10b981',
-                            '--warning-color': '#f59e0b',
-                            '--danger-color': '#ef4444',
-                            '--bg-color': '#f8fafc',
-                            '--text-color': '#1e293b',
-                            '--card-bg': '#ffffff',
-                            '--border-color': '#e5e7eb'
-                        }
-                    },
-                    dark: {
-                        name: 'Sombre',
-                        colors: {
-                            '--primary-color': '#2dd4bf',
-                            '--secondary-color': '#60a5fa',
-                            '--success-color': '#34d399',
-                            '--warning-color': '#fbbf24',
-                            '--danger-color': '#f87171',
-                            '--bg-color': '#1e293b',
-                            '--text-color': '#f1f5f9',
-                            '--card-bg': '#334155',
-                            '--border-color': '#475569'
-                        }
-                    },
-                    blue: {
-                        name: 'Bleu',
-                        colors: {
-                            '--primary-color': '#3b82f6',
-                            '--secondary-color': '#8b5cf6',
-                            '--success-color': '#10b981',
-                            '--warning-color': '#f59e0b',
-                            '--danger-color': '#ef4444',
-                            '--bg-color': '#eff6ff',
-                            '--text-color': '#1e40af',
-                            '--card-bg': '#ffffff',
-                            '--border-color': '#bfdbfe'
-                        }
-                    }
-                };
-                
-                this.currentTheme = dataManager.load('theme') || 'light';
-                this.applyTheme(this.currentTheme);
-            }
-            
-            applyTheme(themeName) {
-                const theme = this.themes[themeName];
-                if (!theme) return;
-                
-                // Appliquer les couleurs CSS
-                Object.entries(theme.colors).forEach(([property, value]) => {
-                    document.documentElement.style.setProperty(property, value);
-                });
-                
-                // Mettre à jour l'attribut data-theme
-                document.documentElement.setAttribute('data-theme', themeName);
-                
-                this.currentTheme = themeName;
-                dataManager.save('theme', themeName);
-                
-                // Notifier le changement
-                notificationSystem.add('info', 'Thème changé', 
-                    `Thème ${theme.name} appliqué`, 'palette');
-            }
-            
-            getNextTheme() {
-                const themeNames = Object.keys(this.themes);
-                const currentIndex = themeNames.indexOf(this.currentTheme);
-                const nextIndex = (currentIndex + 1) % themeNames.length;
-                return themeNames[nextIndex];
-            }
-            
-            changeTheme() {
-                const nextTheme = this.getNextTheme();
-                this.applyTheme(nextTheme);
-            }
-        }
-        
-        const themeManager = new ThemeManager();
-        
-        // ============================================
-        // 6. DONNÉES ET ÉTAT GLOBAL
-        // ============================================
-        
-        let establishments = dataManager.load('establishments') || [
-            {
-                id: 1,
-                name: "Le Bistrot Parisien",
-                siret: "12345678901234",
-                address: "123 Rue de Paris, 75001 Paris",
-                erpType: "L",
-                capacity: 120,
-                compliance: 92,
-                status: "Conforme",
-                lastCheck: "2024-01-15",
-                createdAt: "2024-01-01",
-                manager: "Jean Dupont"
-            },
-            {
-                id: 2,
-                name: "La Table du Chef",
-                siret: "98765432109876",
-                address: "45 Avenue des Chefs, 69001 Lyon",
-                erpType: "N",
-                capacity: 80,
-                compliance: 78,
-                status: "À vérifier",
-                lastCheck: "2024-01-10",
-                createdAt: "2024-01-05",
-                manager: "Marie Martin"
-            },
-            {
-                id: 3,
-                name: "Café de la Gare",
-                siret: "56789012345678",
-                address: "Gare du Nord, 75010 Paris",
-                erpType: "P",
-                capacity: 200,
-                compliance: 95,
-                status: "Conforme",
-                lastCheck: "2024-01-18",
-                createdAt: "2024-01-12",
-                manager: "Pierre Dubois"
-            }
-        ];
-        
-        let teamMembers = dataManager.load('team') || [
-            { id: 1, name: "Marie Dubois", role: "admin", email: "marie@hestia.fr", status: "active", lastActive: new Date().toISOString() },
-            { id: 2, name: "Jean Martin", role: "manager", email: "jean@hestia.fr", status: "active", lastActive: new Date().toISOString() },
-            { id: 3, name: "Sophie Bernard", role: "auditor", email: "sophie@hestia.fr", status: "inactive", lastActive: "2024-01-10" },
-            { id: 4, name: "Pierre Moreau", role: "support", email: "pierre@hestia.fr", status: "active", lastActive: new Date().toISOString() }
-        ];
-        
-        let documents = dataManager.load('documents') || [
-            { id: 1, establishmentId: 1, type: "Registre de sécurité", expiry: "2024-03-15", status: "Valide", fileName: "registre_securite.pdf" },
-            { id: 2, establishmentId: 2, type: "Contrat d'extincteur", expiry: "2024-02-10", status: "Expire bientôt", fileName: "contrat_extincteur.pdf" },
-            { id: 3, establishmentId: 3, type: "Attestation formation", expiry: "2024-04-20", status: "Valide", fileName: "attestation_formation.pdf" }
-        ];
-        
-        let savedDocuments = dataManager.load('savedDocs') || [
-            { id: 1, title: "Rapport mensuel Janvier", content: "Contenu du rapport...", createdAt: "2024-01-31", type: "report" },
-            { id: 2, title: "Checklist conformité", content: "Liste des vérifications...", createdAt: "2024-01-15", type: "checklist" }
-        ];
-        
-        // ============================================
-        // 7. FONCTIONS D'EXPORT ET RAPPORTS
-        // ============================================
-        
-        function exportDashboardPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // En-tête
-            doc.setFontSize(20);
-            doc.setTextColor(15, 118, 110);
-            doc.text('Rapport HESTIA - Tableau de bord', 20, 20);
-            
-            // Date
-            doc.setFontSize(10);
-            doc.setTextColor(100, 100, 100);
-            doc.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 20, 30);
-            
-            // Statistiques
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            doc.text('Statistiques principales:', 20, 45);
-            
-            const stats = [
-                `Établissements: ${establishments.length}`,
-                `Taux de conformité moyen: ${calculateAverageCompliance()}%`,
-                `Documents à vérifier: ${documents.filter(d => d.status === 'Expire bientôt').length}`,
-                `Alertes actives: ${documents.filter(d => d.status === 'Expire bientôt').length}`
-            ];
-            
-            stats.forEach((stat, index) => {
-                doc.text(`• ${stat}`, 25, 55 + (index * 7));
             });
-            
-            // Liste des établissements
-            doc.addPage();
-            doc.setFontSize(16);
-            doc.text('Liste des établissements', 20, 20);
-            
-            doc.setFontSize(10);
-            let y = 35;
-            establishments.forEach((est, index) => {
-                if (y > 250) {
-                    doc.addPage();
-                    y = 20;
-                }
-                doc.text(`${index + 1}. ${est.name} (${est.siret})`, 20, y);
-                doc.text(`   Conformité: ${est.compliance}% | Capacité: ${est.capacity}`, 25, y + 5);
-                y += 15;
-            });
-            
-            // Sauvegarde
-            doc.save(`rapport-hestia-${new Date().toISOString().split('T')[0]}.pdf`);
-            
-            // Ajouter à l'historique
-            addToReportHistory('PDF', 'Tableau de bord complet');
-            
-            notificationSystem.add('success', 'PDF généré', 
-                'Le rapport a été téléchargé avec succès', 'file-pdf');
-        }
-        
-        function exportDashboardCSV() {
-            const data = establishments.map(est => ({
-                Nom: est.name,
-                SIRET: est.siret,
-                Adresse: est.address,
-                'Type ERP': est.erpType,
-                Capacité: est.capacity,
-                Conformité: `${est.compliance}%`,
-                Statut: est.status,
-                'Dernière vérification': est.lastCheck
-            }));
-            
-            const csv = Papa.unparse(data);
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `establishments-${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            addToReportHistory('CSV', 'Export des établissements');
-            notificationSystem.add('success', 'CSV exporté', 
-                'Les données ont été exportées avec succès', 'file-csv');
-        }
-        
-        function exportAllDataCSV() {
-            const allData = {
-                establishments: establishments,
-                team: teamMembers,
-                documents: documents,
-                analytics: analytics.generateReport()
-            };
-            
-            const csv = Papa.unparse([allData]);
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `hestia-backup-${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            notificationSystem.add('success', 'Sauvegarde complète', 
-                'Toutes les données ont été exportées', 'database');
-        }
-        
-        function generateFullReportPDF() {
-            // Cette fonction générerait un rapport plus complet
-            notificationSystem.add('info', 'Rapport en cours', 
-                'Génération du rapport complet...', 'spinner');
-            
-            setTimeout(() => {
-                notificationSystem.add('success', 'Rapport prêt', 
-                    'Le rapport détaillé est disponible', 'file-alt');
-            }, 2000);
-        }
-        
-        function addToReportHistory(type, description) {
-            const reports = dataManager.load('reports') || [];
-            reports.unshift({
-                id: Date.now(),
-                type: type,
-                description: description,
-                date: new Date().toISOString(),
-                size: '~500KB'
-            });
-            
-            dataManager.save('reports', reports);
-            updateReportHistory();
-        }
-        
-        function updateReportHistory() {
-            const reports = dataManager.load('reports') || [];
-            const historyTable = document.getElementById('reportHistory');
-            
-            if (historyTable) {
-                historyTable.innerHTML = reports.slice(0, 10).map(report => `
-                    <tr>
-                        <td>${new Date(report.date).toLocaleDateString('fr-FR')}</td>
-                        <td><span class="badge ${report.type === 'PDF' ? 'bg-danger' : 'bg-success'}">${report.type}</span></td>
-                        <td>${report.description}</td>
-                        <td>${report.size}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-        }
-        
-        // ============================================
-        // 8. ÉDITEUR DE DOCUMENTS
-        // ============================================
-        
-        function formatText(command) {
-            document.execCommand(command, false, null);
-            document.getElementById('documentContent').focus();
-        }
-        
-        function formatHeading(level) {
-            document.execCommand('formatBlock', false, level);
-        }
-        
-        function insertBulletList() {
-            document.execCommand('insertUnorderedList', false, null);
-        }
-        
-        function insertNumberedList() {
-            document.execCommand('insertOrderedList', false, null);
-        }
-        
-        function saveDocument() {
-            const content = document.getElementById('documentContent').innerHTML;
-            const title = prompt('Titre du document:', 'Nouveau document');
-            
-            if (title && content.trim()) {
-                const newDoc = {
-                    id: Date.now(),
-                    title: title,
-                    content: content,
-                    createdAt: new Date().toISOString(),
-                    type: 'document',
-                    author: authSystem.currentUser ? authSystem.currentUser.name : 'Anonyme'
-                };
-                
-                savedDocuments.unshift(newDoc);
-                dataManager.save('savedDocs', savedDocuments);
-                updateSavedDocumentsList();
-                
-                notificationSystem.add('success', 'Document sauvegardé', 
-                    `"${title}" a été sauvegardé`, 'save');
-            }
-        }
-        
-        function exportDocument() {
-            const content = document.getElementById('documentContent').innerHTML;
-            const text = document.getElementById('documentContent').innerText;
-            const title = prompt('Nom du fichier:', 'document-hestia');
-            
-            if (title && text.trim()) {
-                const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', `${title}.txt`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                notificationSystem.add('success', 'Document exporté', 
-                    'Le document a été téléchargé', 'download');
-            }
-        }
-        
-        function printDocument() {
-            window.print();
-        }
-        
-        function updateSavedDocumentsList() {
-            const list = document.getElementById('savedDocuments');
-            if (list) {
-                list.innerHTML = savedDocuments.map(doc => `
-                    <a href="#" class="list-group-item list-group-item-action" 
-                       onclick="loadDocument(${doc.id})">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">${doc.title}</h6>
-                            <small>${new Date(doc.createdAt).toLocaleDateString('fr-FR')}</small>
-                        </div>
-                        <p class="mb-1 small text-muted">${doc.author} • ${doc.type}</p>
-                    </a>
-                `).join('');
-                
-                if (savedDocuments.length === 0) {
-                    list.innerHTML = '<div class="p-3 text-center text-muted">Aucun document sauvegardé</div>';
-                }
-            }
-        }
-        
-        function loadDocument(id) {
-            const doc = savedDocuments.find(d => d.id === id);
-            if (doc) {
-                document.getElementById('documentContent').innerHTML = doc.content;
-                notificationSystem.add('info', 'Document chargé', 
-                    `"${doc.title}" a été chargé`, 'file-import');
-            }
-        }
-        
-        // ============================================
-        // 9. PERFORMANCE ET OPTIMISATION
-        // ============================================
-        
-        // Lazy loading des images et éléments
-        const lazyLoadObserver = new IntersectionObserver((entries) => {
+        });
+
+        // Animation de la barre de progression au scroll
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('lazy-loaded');
-                    
-                    // Si c'est un graphique, l'initialiser
-                    if (entry.target.id === 'chartCompliance') {
-                        initComplianceChart();
-                    }
-                    if (entry.target.id === 'chartAlerts') {
-                        initAlertsChart();
-                    }
-                    
-                    lazyLoadObserver.unobserve(entry.target);
+                    const bar = entry.target;
+                    bar.style.width = bar.getAttribute('data-width') || '15%';
                 }
             });
-        }, { threshold: 0.1 });
-        
-        // Virtual scrolling
-        class VirtualScroll {
-            constructor(container, items, itemHeight, renderItem) {
-                this.container = container;
-                this.items = items;
-                this.itemHeight = itemHeight;
-                this.renderItem = renderItem;
-                this.visibleItems = Math.ceil(container.clientHeight / itemHeight);
-                this.startIndex = 0;
-                
-                this.init();
-            }
-            
-            init() {
-                this.render();
-                this.container.addEventListener('scroll', () => this.onScroll());
-            }
-            
-            onScroll() {
-                const scrollTop = this.container.scrollTop;
-                const newStartIndex = Math.floor(scrollTop / this.itemHeight);
-                
-                if (newStartIndex !== this.startIndex) {
-                    this.startIndex = newStartIndex;
-                    this.render();
-                }
-            }
-            
-            render() {
-                const endIndex = Math.min(this.startIndex + this.visibleItems, this.items.length);
-                const visibleItems = this.items.slice(this.startIndex, endIndex);
-                
-                this.container.innerHTML = '';
-                
-                visibleItems.forEach((item, index) => {
-                    const element = document.createElement('div');
-                    element.className = 'virtual-item';
-                    element.style.top = `${(this.startIndex + index) * this.itemHeight}px`;
-                    element.style.height = `${this.itemHeight}px`;
-                    element.innerHTML = this.renderItem(item);
-                    this.container.appendChild(element);
-                });
-                
-                // Ajuster la hauteur du conteneur pour le scroll
-                this.container.style.height = `${this.items.length * this.itemHeight}px`;
-            }
-            
-            updateItems(newItems) {
-                this.items = newItems;
-                this.render();
-            }
-        }
-        
-        let virtualScroll = null;
-        
-        // ============================================
-        // 10. FONCTIONS PRINCIPALES DE L'APPLICATION
-        // ============================================
-        
-        function showSection(sectionId) {
-            // Cacher toutes les sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Afficher la section demandée
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.style.display = 'block';
-                
-                // Mettre à jour la navigation active
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                
-                // Marquer le lien actif
-                const activeLink = document.querySelector(`[onclick="showSection('${sectionId}')"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active');
-                }
-                
-                // Suivre l'analytique
-                analytics.trackPageView(sectionId);
-                
-                // Observer les éléments lazy load
-                document.querySelectorAll('.lazy-load').forEach(el => {
-                    lazyLoadObserver.observe(el);
-                });
-                
-                // Initialiser les composants spécifiques
-                if (sectionId === 'dashboard') {
-                    loadDashboard();
-                } else if (sectionId === 'establishments') {
-                    loadEstablishmentsTable();
-                } else if (sectionId === 'documents') {
-                    updateSavedDocumentsList();
-                } else if (sectionId === 'reports') {
-                    updateReportHistory();
-                } else if (sectionId === 'analytics') {
-                    analytics.updateDashboard();
-                    initUserActivityChart();
-                }
-            }
-        }
-        
-        function loadDashboard() {
-            // Mettre à jour les statistiques
-            updateStats();
-            
-            // Initialiser le virtual scrolling
-            if (!virtualScroll) {
-                const container = document.getElementById('virtualScrollContainer');
-                if (container) {
-                    virtualScroll = new VirtualScroll(
-                        container,
-                        establishments.slice().reverse(),
-                        70,
-                        (est) => `
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">${est.name}</h6>
-                                    <small class="text-muted">${est.siret}</small>
-                                </div>
-                                <div class="text-end">
-                                    <span class="badge ${est.compliance > 80 ? 'bg-success' : 'bg-warning'}">
-                                        ${est.compliance}%
-                                    </span>
-                                    <br>
-                                    <small>${est.lastCheck}</small>
-                                </div>
-                            </div>
-                        `
-                    );
-                }
-            } else {
-                virtualScroll.updateItems(establishments.slice().reverse());
-            }
-            
-            // Observer les graphiques pour le lazy loading
-            document.querySelectorAll('.lazy-load').forEach(el => {
-                lazyLoadObserver.observe(el);
-            });
-        }
-        
-        function updateStats() {
-            const today = new Date();
-            const thisMonth = today.getMonth();
-            const thisYear = today.getFullYear();
-            
-            const newThisMonth = establishments.filter(est => {
-                const estDate = new Date(est.createdAt);
-                return estDate.getMonth() === thisMonth && estDate.getFullYear() === thisYear;
-            }).length;
-            
-            const docsToUpdate = documents.filter(d => d.status === 'Expire bientôt').length;
-            const urgentAlerts = documents.filter(d => {
-                const expiryDate = new Date(d.expiry);
-                const daysDiff = (expiryDate - today) / (1000 * 60 * 60 * 24);
-                return daysDiff <= 3;
-            }).length;
-            
-            const activeUsers = teamMembers.filter(m => m.status === 'active').length;
-            
-            document.getElementById('statEstablishments').textContent = establishments.length;
-            document.getElementById('statNewEstablishments').textContent = newThisMonth;
-            document.getElementById('statCompliance').textContent = `${calculateAverageCompliance()}%`;
-            document.getElementById('statDocumentsToUpdate').textContent = docsToUpdate;
-            document.getElementById('statAlerts').textContent = docsToUpdate;
-            document.getElementById('statUrgentAlerts').textContent = urgentAlerts;
-            document.getElementById('statTeamMembers').textContent = teamMembers.length;
-            document.getElementById('statActiveUsers').textContent = activeUsers;
-        }
-        
-        function calculateAverageCompliance() {
-            if (establishments.length === 0) return 0;
-            const total = establishments.reduce((sum, est) => sum + est.compliance, 0);
-            return Math.round(total / establishments.length);
-        }
-        
-        function initComplianceChart() {
-            const ctx = document.getElementById('complianceChart').getContext('2d');
-            
-            // Regrouper par type ERP
-            const types = ['L', 'N', 'O', 'P'];
-            const data = types.map(type => {
-                const typeEsts = establishments.filter(e => e.erpType === type);
-                return typeEsts.length > 0 ? 
-                    typeEsts.reduce((sum, e) => sum + e.compliance, 0) / typeEsts.length : 0;
-            });
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: types.map(t => `Type ${t}`),
-                    datasets: [{
-                        label: 'Taux de conformité',
-                        data: data,
-                        backgroundColor: [
-                            'rgba(15, 118, 110, 0.7)',
-                            'rgba(59, 130, 246, 0.7)',
-                            'rgba(16, 185, 129, 0.7)',
-                            'rgba(139, 92, 246, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgb(15, 118, 110)',
-                            'rgb(59, 130, 246)',
-                            'rgb(16, 185, 129)',
-                            'rgb(139, 92, 246)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100
-                        }
-                    }
-                }
-            });
-        }
-        
-        function initAlertsChart() {
-            const ctx = document.getElementById('alertsChart').getContext('2d');
-            
-            // Données simulées pour les 6 derniers mois
-            const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'];
-            const alertData = [12, 8, 15, 10, 7, 4];
-            
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: months,
-                    datasets: [{
-                        label: 'Alertes mensuelles',
-                        data: alertData,
-                        borderColor: 'rgb(239, 68, 68)',
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true
-                }
-            });
-        }
-        
-        function initUserActivityChart() {
-            const ctx = document.getElementById('userActivityChart').getContext('2d');
-            
-            // Données des 7 derniers jours
-            const last7Days = Array.from({length: 7}, (_, i) => {
-                const date = new Date();
-                date.setDate(date.getDate() - (6 - i));
-                return date.toLocaleDateString('fr-FR', { weekday: 'short' });
-            });
-            
-            const activityData = last7Days.map(day => {
-                // Simuler des données d'activité
-                return Math.floor(Math.random() * 50) + 20;
-            });
-            
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: last7Days,
-                    datasets: [{
-                        label: 'Activité utilisateur',
-                        data: activityData,
-                        borderColor: 'rgb(59, 130, 246)',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true
-                }
-            });
-        }
-        
-        function loadEstablishmentsTable() {
-            const tableBody = document.getElementById('establishmentsTable');
-            if (tableBody) {
-                tableBody.innerHTML = establishments.map(est => `
-                    <tr>
-                        <td><strong>${est.name}</strong></td>
-                        <td>${est.address}</td>
-                        <td>${est.siret}</td>
-                        <td><span class="badge bg-secondary">Type ${est.erpType}</span></td>
-                        <td>${est.capacity} personnes</td>
-                        <td>
-                            <span class="badge ${est.status === 'Conforme' ? 'bg-success' : 'bg-warning'}">
-                                ${est.status}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-1" onclick="viewEstablishment(${est.id})">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            ${authSystem.checkPermission('manager') ? `
-                                <button class="btn btn-sm btn-outline-warning me-1" onclick="editEstablishment(${est.id})">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            ` : ''}
-                            ${authSystem.checkPermission('admin') ? `
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteEstablishment(${est.id})">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            ` : ''}
-                        </td>
-                    </tr>
-                `).join('');
-            }
-        }
-        
-        function filterEstablishments() {
-            const searchTerm = document.getElementById('searchEstablishments').value.toLowerCase();
-            const filtered = establishments.filter(est => 
-                est.name.toLowerCase().includes(searchTerm) ||
-                est.siret.includes(searchTerm) ||
-                est.address.toLowerCase().includes(searchTerm)
-            );
-            
-            const tableBody = document.getElementById('establishmentsTable');
-            if (tableBody) {
-                tableBody.innerHTML = filtered.map(est => `
-                    <tr>
-                        <td><strong>${est.name}</strong></td>
-                        <td>${est.address}</td>
-                        <td>${est.siret}</td>
-                        <td><span class="badge bg-secondary">Type ${est.erpType}</span></td>
-                        <td>${est.capacity} personnes</td>
-                        <td>
-                            <span class="badge ${est.status === 'Conforme' ? 'bg-success' : 'bg-warning'}">
-                                ${est.status}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-1" onclick="viewEstablishment(${est.id})">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-        }
-        
-        function viewEstablishment(id) {
-            const establishment = establishments.find(e => e.id === id);
-            if (establishment) {
-                const modalContent = `
-                    <h4>${establishment.name}</h4>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>SIRET:</strong> ${establishment.siret}</p>
-                            <p><strong>Adresse:</strong> ${establishment.address}</p>
-                            <p><strong>Type ERP:</strong> ${establishment.erpType}</p>
-                            <p><strong>Capacité:</strong> ${establishment.capacity} personnes</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Conformité:</strong> ${establishment.compliance}%</p>
-                            <p><strong>Statut:</strong> ${establishment.status}</p>
-                            <p><strong>Dernière vérification:</strong> ${establishment.lastCheck}</p>
-                            <p><strong>Créé le:</strong> ${establishment.createdAt}</p>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <h5>Documents associés</h5>
-                        <ul class="list-group">
-                            ${documents.filter(d => d.establishmentId === id)
-                                .map(d => `
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <strong>${d.type}</strong><br>
-                                            <small>${d.fileName}</small>
-                                        </div>
-                                        <span class="badge ${d.status === 'Valide' ? 'bg-success' : 'bg-warning'}">
-                                            ${d.status} - ${d.expiry}
-                                        </span>
-                                    </li>
-                                `).join('')}
-                        </ul>
-                    </div>
-                `;
-                
-                document.getElementById('establishmentDetails').innerHTML = modalContent;
-                const modal = new bootstrap.Modal(document.getElementById('establishmentModal'));
-                modal.show();
-                
-                analytics.trackEvent('view_establishment', { establishmentId: id });
-            }
-        }
-        
-        function showAddEstablishmentForm() {
-            showSection('addEstablishment');
-        }
-        
-        function addEstablishment(event) {
-            event.preventDefault();
-            
-            if (!authSystem.checkPermission('manager')) {
-                notificationSystem.add('danger', 'Permission refusée', 
-                    'Vous n\'avez pas les droits pour ajouter un établissement', 'lock');
-                return false;
-            }
-            
-            const newEstablishment = {
-                id: Date.now(),
-                name: document.getElementById('name').value,
-                siret: document.getElementById('siret').value,
-                address: document.getElementById('address').value,
-                erpType: document.getElementById('erpType').value,
-                capacity: parseInt(document.getElementById('capacity').value),
-                manager: document.getElementById('manager').value || 'Non spécifié',
-                compliance: 50, // Valeur par défaut
-                status: "À vérifier",
-                lastCheck: new Date().toISOString().split('T')[0],
-                createdAt: new Date().toISOString().split('T')[0],
-                notes: document.getElementById('notes').value
-            };
-            
-            establishments.unshift(newEstablishment);
-            dataManager.save('establishments', establishments);
-            
-            // Suivre l'événement
-            analytics.trackEvent('add_establishment', { 
-                establishmentId: newEstablishment.id,
-                type: newEstablishment.erpType 
-            });
-            
-            // Notification
-            notificationSystem.add('success', 'Établissement ajouté', 
-                `${newEstablishment.name} a été ajouté avec succès`, 'check-circle');
-            
-            // Réinitialiser le formulaire
-            document.getElementById('establishmentForm').reset();
-            
-            // Retour à la liste
-            showSection('establishments');
-            loadEstablishmentsTable();
-            updateStats();
-            
-            return false;
-        }
-        
-        function editEstablishment(id) {
-            const establishment = establishments.find(e => e.id === id);
-            if (establishment) {
-                document.getElementById('name').value = establishment.name;
-                document.getElementById('siret').value = establishment.siret;
-                document.getElementById('address').value = establishment.address;
-                document.getElementById('erpType').value = establishment.erpType;
-                document.getElementById('capacity').value = establishment.capacity;
-                document.getElementById('manager').value = establishment.manager;
-                document.getElementById('notes').value = establishment.notes || '';
-                
-                showAddEstablishmentForm();
-                
-                // Changer le titre du formulaire
-                document.querySelector('#addEstablishment .card-header h5').innerHTML = 
-                    '<i class="fas fa-edit me-2"></i>Modifier l\'Établissement';
-                
-                // Changer l'action du formulaire
-                document.getElementById('establishmentForm').onsubmit = function(e) {
-                    e.preventDefault();
-                    updateEstablishment(id);
-                    return false;
-                };
-            }
-        }
-        
-        function updateEstablishment(id) {
-            const index = establishments.findIndex(e => e.id === id);
-            if (index !== -1) {
-                establishments[index] = {
-                    ...establishments[index],
-                    name: document.getElementById('name').value,
-                    siret: document.getElementById('siret').value,
-                    address: document.getElementById('address').value,
-                    erpType: document.getElementById('erpType').value,
-                    capacity: parseInt(document.getElementById('capacity').value),
-                    manager: document.getElementById('manager').value || 'Non spécifié',
-                    notes: document.getElementById('notes').value
-                };
-                
-                dataManager.save('establishments', establishments);
-                
-                notificationSystem.add('success', 'Établissement modifié', 
-                    `${establishments[index].name} a été mis à jour`, 'save');
-                
-                showSection('establishments');
-                loadEstablishmentsTable();
-                updateStats();
-            }
-        }
-        
-        function deleteEstablishment(id) {
-            if (!authSystem.checkPermission('admin')) {
-                notificationSystem.add('danger', 'Permission refusée', 
-                    'Seuls les administrateurs peuvent supprimer des établissements', 'lock');
-                return;
-            }
-            
-            if (confirm('Êtes-vous sûr de vouloir supprimer cet établissement ?')) {
-                const index = establishments.findIndex(e => e.id === id);
-                if (index !== -1) {
-                    const name = establishments[index].name;
-                    establishments.splice(index, 1);
-                    dataManager.save('establishments', establishments);
-                    
-                    analytics.trackEvent('delete_establishment', { establishmentId: id });
-                    notificationSystem.add('warning', 'Établissement supprimé', 
-                        `${name} a été supprimé`, 'trash');
-                    
-                    loadEstablishmentsTable();
-                    updateStats();
-                }
-            }
-        }
-        
-        function refreshData() {
-            updateStats();
-            notificationSystem.add('info', 'Données rafraîchies', 
-                'Les données ont été mises à jour', 'sync-alt');
-        }
-        
-        function toggleSidebar() {
-            document.querySelector('.sidebar').classList.toggle('mobile-open');
-        }
-        
-        function toggleNotifications() {
-            const dropdown = document.getElementById('notificationDropdown');
-            if (dropdown.style.display === 'block') {
-                dropdown.style.display = 'none';
-            } else {
-                dropdown.style.display = 'block';
-                notificationSystem.updateUI();
-            }
-        }
-        
-        function markNotificationAsRead(id) {
-            notificationSystem.markAsRead(id);
-        }
-        
-        function clearNotifications() {
-            if (confirm('Effacer toutes les notifications ?')) {
-                notificationSystem.clearAll();
-            }
-        }
-        
-        function changeTheme() {
-            themeManager.changeTheme();
-        }
-        
-        function logout() {
-            authSystem.logout();
-        }
-        
-        function showAnalyticsDashboard() {
-            showSection('analytics');
-        }
-        
-        function exportAllData() {
-            const data = dataManager.exportAllData();
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `hestia-backup-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            
-            notificationSystem.add('success', 'Sauvegarde créée', 
-                'Toutes les données ont été exportées', 'download');
-        }
-        
-        function importData() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    if (dataManager.importAllData(e.target.result)) {
-                        notificationSystem.add('success', 'Données restaurées', 
-                            'Les données ont été importées avec succès', 'upload');
-                        location.reload();
-                    } else {
-                        notificationSystem.add('danger', 'Erreur d\'import', 
-                            'Le fichier est invalide ou corrompu', 'exclamation-triangle');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-        
-        // ============================================
-        // 11. INITIALISATION AU CHARGEMENT
-        // ============================================
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Gestion du formulaire de login
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const email = document.getElementById('loginEmail').value;
-                const password = document.getElementById('loginPassword').value;
-                const rememberMe = document.getElementById('rememberMe').checked;
-                
-                authSystem.login(email, password, rememberMe);
-            });
-            
-            // Initialiser les tooltips Bootstrap
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-            
-            // Gestion du pull to refresh sur mobile
-            let touchStartY = 0;
-            let touchEndY = 0;
-            
-            document.addEventListener('touchstart', function(e) {
-                touchStartY = e.touches[0].clientY;
-            });
-            
-            document.addEventListener('touchend', function(e) {
-                touchEndY = e.changedTouches[0].clientY;
-                const pullDistance = touchStartY - touchEndY;
-                
-                if (pullDistance > 100 && window.scrollY === 0) {
-                    refreshData();
-                }
-            });
-            
-            // Cacher le dropdown de notifications en cliquant ailleurs
-            document.addEventListener('click', function(e) {
-                const dropdown = document.getElementById('notificationDropdown');
-                const button = document.querySelector('[onclick="toggleNotifications()"]');
-                
-                if (dropdown && button && 
-                    !dropdown.contains(e.target) && 
-                    !button.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
-            
-            // Sauvegarder les données avant de quitter
-            window.addEventListener('beforeunload', function() {
-                analytics.endSession();
-                dataManager.save('establishments', establishments);
-                dataManager.save('team', teamMembers);
-                dataManager.save('documents', documents);
-                dataManager.save('savedDocs', savedDocuments);
-            });
-            
-            // Démo : Ajouter des notifications au démarrage
-            setTimeout(() => {
-                if (authSystem.currentUser) {
-                    notificationSystem.add('info', 'Bienvenue sur HESTIA', 
-                        'Commencez par ajouter vos établissements', 'info-circle');
-                    
-                    notificationSystem.add('warning', 'Document à vérifier', 
-                        'Le registre de sécurité expire dans 3 jours', 'exclamation-triangle');
-                    
-                    if (establishments.length === 0) {
-                        notificationSystem.add('info', 'Premiers pas', 
-                            'Ajoutez votre premier établissement pour commencer', 'plus-circle');
-                    }
-                }
-            }, 1000);
-            
-            // Initialiser le thème
-            themeManager.applyTheme(themeManager.currentTheme);
-        });
-    </script>
+        }, { threshold: 0.5 });
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Service Worker pour PWA -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(error => {
-                console.log('Service Worker registration failed:', error);
-            });
+        const barre = document.querySelector('.barre-remplie');
+        if (barre) {
+            barre.setAttribute('data-width', '15%'); // Valeur cible
+            barre.style.width = '0%'; // Départ à 0
+            observer.observe(barre);
         }
     </script>
 </body>
