@@ -142,6 +142,15 @@
             font-size: 1.8rem;
             font-weight: bold;
             color: var(--blanc);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            border-radius: 5px;
         }
 
         .logo span {
@@ -174,19 +183,20 @@
            HERO SECTION
            ========================================= */
         .hero {
-            /* L'image de fond est le paysage du Collet */
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('./images/470587471_5788935574785593_7344423335329762697_n.jpg') center/cover no-repeat;
+            height: 85vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: var(--blanc);
             padding: 0 20px;
+            position: relative;
         }
 
         .hero-content {
             max-width: 800px;
+            z-index: 2;
         }
 
         .hero h1 {
@@ -221,7 +231,7 @@
             text-align: center;
             font-size: 2rem;
             color: var(--rose);
-            margin: 40px 0 20px;
+            margin: 50px 0 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
@@ -246,13 +256,14 @@
 
         .carte-event:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
         .carte-event img {
             width: 100%;
             height: 250px;
             object-fit: cover;
-            background-color: #ddd; /* Placeholder */
+            background-color: #ddd;
         }
 
         .carte-event-contenu {
@@ -409,7 +420,7 @@
         .barre-remplie {
             background: linear-gradient(90deg, var(--vert), var(--jaune));
             height: 100%;
-            width: 15%; /* Exemple : 15 000 sur 137 000 */
+            width: 15%;
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -417,35 +428,40 @@
             color: var(--noir);
             font-weight: bold;
             font-size: 0.8rem;
-            transition: width 1s ease-in-out;
+            transition: width 1.5s ease-in-out;
         }
 
-        .frise {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px dashed #444;
-            text-align: center;
-            flex-wrap: wrap;
+        /* =========================================
+           GALERIE / AFFICHES
+           ========================================= */
+        .galerie {
+            padding: 80px 0;
+            background-color: var(--gris-clair);
+        }
+
+        .galerie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
 
-        .frise-item {
-            flex: 1;
-            min-width: 120px;
+        .galerie-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            background: var(--blanc);
+            padding: 10px;
         }
 
-        .frise-item span {
-            display: block;
-            font-weight: bold;
-            color: var(--rose);
-            margin-bottom: 5px;
+        .galerie-item:hover {
+            transform: scale(1.03);
         }
 
-        .frise-item small {
-            color: #aaa;
-            font-size: 0.8rem;
+        .galerie-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
         }
 
         /* =========================================
@@ -535,10 +551,6 @@
                 align-items: center;
                 padding-top: 15px;
             }
-            .frise {
-                flex-direction: column;
-                gap: 30px;
-            }
         }
     </style>
 </head>
@@ -547,7 +559,10 @@
     <!-- ================= HEADER ================= -->
     <header>
         <div class="container header-content">
-            <div class="logo">Les Tréteaux <span>du Collet</span></div>
+            <div class="logo">
+                <img src="./images/470697682_578893554785595_5296946919700971899_n.jpg" alt="Logo Les Tréteaux du Collet">
+                <span>Les Tréteaux du Collet</span>
+            </div>
             <div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active')">☰</div>
             <nav>
                 <ul>
@@ -555,6 +570,7 @@
                     <li><a href="#programmation">Programmation</a></li>
                     <li><a href="#le-lieu">Le Lieu</a></li>
                     <li><a href="#projet">Soutenir le projet</a></li>
+                    <li><a href="#galerie">Affiches</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -583,8 +599,7 @@
             <h3 class="mois-titre">Juillet 2026</h3>
             <div class="grille-evenements">
                 <div class="carte-event">
-                    <!-- Image de l'affiche Scène Ouverte -->
-                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Scene+Ouverte" alt="Affiche Scène Ouverte">
+                    <img src="./images/792520916_1103111582377884_167584276360187957_n.jpg" alt="Affiche Scène Ouverte">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 3 - 21h</div>
                         <h4 class="carte-event-titre">Scène Ouverte</h4>
@@ -593,7 +608,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/1e1e1e/ffffff?text=Soiree+Esseirot" alt="Soirée Esseirot">
+                    <img src="./images/737550758_1052452777443765_5578881853068918061_n.jpg" alt="Affiche Juillet">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 4 - 21h</div>
                         <h4 class="carte-event-titre">Soirée ESSEIROT</h4>
@@ -602,7 +617,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/fbc531/1e1e1e?text=Fanfare" alt="Fanfare">
+                    <img src="./images/737550758_1052452777443765_5578881853068918061_n.jpg" alt="Affiche Juillet">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Mercredi 8 - 21h</div>
                         <h4 class="carte-event-titre">Fanfare Le Grand Boucan</h4>
@@ -611,7 +626,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Concert+Poetique" alt="Concert Poétique">
+                    <img src="./images/737550758_1052452777443765_5578881853068918061_n.jpg" alt="Affiche Juillet">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 10 - 21h</div>
                         <h4 class="carte-event-titre">Concert Poétique</h4>
@@ -625,7 +640,7 @@
             <h3 class="mois-titre">Août 2026</h3>
             <div class="grille-evenements">
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/4cd137/1e1e1e?text=Triple+Scott" alt="Triple Scott">
+                    <img src="./images/756959305_1071554822200227_81480004398995547753_n.jpg" alt="Affiche Août">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 1er - 21h</div>
                         <h4 class="carte-event-titre">Triple Scott</h4>
@@ -634,7 +649,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/1e1e1e/ffffff?text=Paniyiri" alt="Paniyiri">
+                    <img src="./images/756959305_1071554822200227_81480004398995547753_n.jpg" alt="Affiche Août">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Mardi 4 - 21h</div>
                         <h4 class="carte-event-titre">Paniyiri</h4>
@@ -643,7 +658,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Duo+Zarico" alt="Duo Zarico">
+                    <img src="./images/756959305_1071554822200227_81480004398995547753_n.jpg" alt="Affiche Août">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Jeudi 6 - 21h</div>
                         <h4 class="carte-event-titre">Duo Zarico</h4>
@@ -652,7 +667,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/fbc531/1e1e1e?text=Theatre+Forum" alt="Théâtre Forum">
+                    <img src="./images/756959305_1071554822200227_81480004398995547753_n.jpg" alt="Affiche Août">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 14 - 20h</div>
                         <h4 class="carte-event-titre">Zeuplèce to Death / Le Discours du Chef Seattle</h4>
@@ -666,7 +681,7 @@
             <h3 class="mois-titre">Septembre 2026</h3>
             <div class="grille-evenements">
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Scene+Ouverte" alt="Scène Ouverte">
+                    <img src="./images/792585231_1103110735711302_2362863429566822929_n.jpg" alt="Affiche Septembre">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 4 - 20h30</div>
                         <h4 class="carte-event-titre">Scène Ouverte</h4>
@@ -675,7 +690,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/4cd137/1e1e1e?text=Echecs" alt="Échecs">
+                    <img src="./images/792585231_1103110735711302_2362863429566822929_n.jpg" alt="Affiche Septembre">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Dimanche 6 - 17h</div>
                         <h4 class="carte-event-titre">ÉCHECS</h4>
@@ -684,7 +699,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/1e1e1e/ffffff?text=Madame+Pan" alt="Madame Pan">
+                    <img src="./images/792585231_1103110735711302_2362863429566822929_n.jpg" alt="Affiche Septembre">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 11 - 21h</div>
                         <h4 class="carte-event-titre">Madame Pan et ses Troglydytes</h4>
@@ -693,7 +708,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/fbc531/1e1e1e?text=Cine-Philo" alt="Ciné-Philo">
+                    <img src="./images/792585231_1103110735711302_2362863429566822929_n.jpg" alt="Affiche Septembre">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Mercredi 16 - 18h30</div>
                         <h4 class="carte-event-titre">CINÉ-PHILO</h4>
@@ -702,7 +717,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Jewa" alt="Jewa">
+                    <img src="./images/792585231_1103110735711302_2362863429566822929_n.jpg" alt="Affiche Septembre">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 19 - 21h</div>
                         <h4 class="carte-event-titre">JEWA (rap-ragga)</h4>
@@ -711,7 +726,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/4cd137/1e1e1e?text=Arpentage" alt="Arpentage">
+                    <img src="./images/797625286_1120553637300345_75986086404492470_n.jpg" alt="Affiche Arpentage">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Mercredi 23 - 18h-20h</div>
                         <h4 class="carte-event-titre">ARPENTAGE du livre "Résister"</h4>
@@ -725,7 +740,7 @@
             <h3 class="mois-titre">Octobre 2026</h3>
             <div class="grille-evenements">
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/e6007e/ffffff?text=Scene+Ouverte" alt="Scène Ouverte">
+                    <img src="./images/825286566_1134039902618385_542225041952631897_n.jpg" alt="Affiche Octobre">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 2 - 20h30</div>
                         <h4 class="carte-event-titre">Scène Ouverte</h4>
@@ -734,7 +749,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/1e1e1e/ffffff?text=Theatre+Forum" alt="Théâtre Forum">
+                    <img src="./images/838403766_1134032125952496_2945894586115332780_n.jpg" alt="Affiche Théâtre Opprimés">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Sam. 17 & Dim. 18</div>
                         <h4 class="carte-event-titre">STAGE Théâtre-Forum</h4>
@@ -743,7 +758,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/fbc531/1e1e1e?text=La+Question" alt="La Question">
+                    <img src="./images/825286566_1134039902618385_542225041952631897_n.jpg" alt="Affiche Octobre">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 9 - 19h</div>
                         <h4 class="carte-event-titre">La question de la propriété</h4>
@@ -752,7 +767,7 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="https://via.placeholder.com/400x250/4cd137/1e1e1e?text=Chtologo" alt="Chtologo">
+                    <img src="./images/825286566_1134039902618385_542225041952631897_n.jpg" alt="Affiche Octobre">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 31 - 20h30</div>
                         <h4 class="carte-event-titre">CHTOLÔGO</h4>
@@ -777,8 +792,7 @@
                     <p>Aujourd'hui, Le Collet est en vente. Un petit groupe d'habitants du coin souhaite que cet endroit perdure, fidèle à l'esprit qui l'anime depuis sa création.</p>
                 </div>
                 <div class="le-lieu-image">
-                    <!-- Image du mas / paysage -->
-                    <img src="https://images.unsplash.com/photo-1543872084-c7bd3822856f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Le mas du Collet dans les Cévennes">
+                    <img src="./images/470587471_5788935574785593_7344423335329762697_n.jpg" alt="Le mas du Collet dans les Cévennes">
                 </div>
             </div>
         </div>
@@ -836,37 +850,27 @@
                     <p>Elle désigne un bien qui appartient conjointement à un groupe de personnes plutôt qu'à un individu. Les membres de l'association, réunis en Assemblée Générale, sont responsables de la bonne administration du bien, décident des usages et garantissent qu'il ne soit pas revendu. Ce système s'oppose à la propriété privée et exclusive.</p>
                 </div>
             </div>
+            
+            <!-- Image de la frise chronologique -->
+            <div style="text-align: center; margin-top: 40px;">
+                <img src="./images/800514645_1107643475258028_1934721282018369410_n.jpg" alt="Frise chronologique du projet" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+            </div>
+        </div>
+    </section>
 
-            <!-- Frise chronologique -->
-            <div class="frise">
-                <div class="frise-item">
-                    <span>1964</span>
-                    <small>Achat du Collet par la famille</small>
-                </div>
-                <div class="frise-item">
-                    <span>2011</span>
-                    <small>Installation de Denis et Anne</small>
-                </div>
-                <div class="frise-item">
-                    <span>2025</span>
-                    <small>Création de l'association Les Amis des Tréteaux</small>
-                </div>
-                <div class="frise-item">
-                    <span>Début 26</span>
-                    <small>Collecte de dons</small>
-                </div>
-                <div class="frise-item">
-                    <span>Juillet 26</span>
-                    <small>Signature du compromis (15 000 €) - FAIT</small>
-                </div>
-                <div class="frise-item">
-                    <span>Sept. 27</span>
-                    <small>Objectif : 137 000 € pour l'achat</small>
-                </div>
-                <div class="frise-item">
-                    <span>Mai 28</span>
-                    <small>Travaux Appart. 2</small>
-                </div>
+    <!-- ================= GALERIE / AFFICHES ================= -->
+    <section id="galerie" class="galerie">
+        <div class="container">
+            <h2>Galerie des Affiches</h2>
+            <div class="galerie-grid">
+                <div class="galerie-item"><img src="./images/737550758_1052452777443765_5578881853068918061_n.jpg" alt="Affiche Juillet"></div>
+                <div class="galerie-item"><img src="./images/756959305_1071554822200227_81480004398995547753_n.jpg" alt="Affiche Août"></div>
+                <div class="galerie-item"><img src="./images/792585231_1103110735711302_2362863429566822929_n.jpg" alt="Affiche Septembre"></div>
+                <div class="galerie-item"><img src="./images/825286566_1134039902618385_542225041952631897_n.jpg" alt="Affiche Octobre"></div>
+                <div class="galerie-item"><img src="./images/792520916_1103111582377884_167584276360187957_n.jpg" alt="Scène Ouverte"></div>
+                <div class="galerie-item"><img src="./images/838403766_1134032125952496_2945894586115332780_n.jpg" alt="Théâtre Opprimés"></div>
+                <div class="galerie-item"><img src="./images/797625286_1120553637300345_75986086404492470_n.jpg" alt="Arpentage"></div>
+                <div class="galerie-item"><img src="./images/799347208_1107643285258047_6839502352602680680_n.jpg" alt="FAQ Soutien"></div>
             </div>
         </div>
     </section>
