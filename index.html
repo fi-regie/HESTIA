@@ -173,7 +173,6 @@
            HERO SECTION
            ========================================= */
         .hero {
-            /* Chemin corrigé pour l'image d'en-tête avec encodage */
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('./images/Ente%CC%82te.jpg') center/cover no-repeat;
             height: 85vh;
             display: flex;
@@ -553,6 +552,30 @@
 
         .footer-col a:hover {
             color: var(--rose);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            border-radius: 50%;
+            color: var(--blanc);
+            font-size: 1.2rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--rose);
+            transform: translateY(-3px);
         }
 
         .footer-bottom {
@@ -1015,6 +1038,12 @@
                     <h4>Les Tréteaux du Collet</h4>
                     <p>Un lieu culturel et de rencontre en Cévennes.</p>
                     <p>Association Les Communs de la Cèze</p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/lestreteauxducollet" target="_blank" title="Suivez-nous sur Facebook">
+                            <!-- Icône Facebook (SVG) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                        </a>
+                    </div>
                 </div>
                 <div class="footer-col">
                     <h4>Contact</h4>
