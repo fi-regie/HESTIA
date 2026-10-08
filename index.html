@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Les Tréteaux du Collet - Théâtre associatif en Cévennes</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Favicon.png">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Favicon.png">
+    <link rel="icon" type="image/png"
+        href="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Favicon.png">
+    <link rel="apple-touch-icon"
+        href="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Favicon.png">
     <style>
         /* =========================================
            VARIABLES & RESET
@@ -52,7 +55,10 @@
         /* =========================================
            TYPOGRAPHIE & UTILITAIRES
            ========================================= */
-        h1, h2, h3, h4 {
+        h1,
+        h2,
+        h3,
+        h4 {
             font-family: var(--font-titre);
             color: var(--noir);
             margin-bottom: 1rem;
@@ -81,8 +87,8 @@
 
         .btn {
             display: inline-block;
-            padding: 12px 25px;
-            border-radius: 30px;
+            padding: 5px 15px;
+            border-radius: 25px;
             font-weight: bold;
             text-transform: uppercase;
             font-size: 0.9rem;
@@ -102,7 +108,7 @@
         }
 
         .btn-jaune {
-            background-color: var(--jaune);
+            background-color: #f4f4f4;
             color: var(--noir);
         }
 
@@ -121,7 +127,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .header-content {
@@ -176,7 +182,7 @@
            HERO SECTION
            ========================================= */
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('./images/Ente%CC%82te.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('./images/Ente%CC%82te.jpg') center/cover no-repeat;
             height: 85vh;
             display: flex;
             align-items: center;
@@ -190,19 +196,36 @@
         .hero-content {
             max-width: 800px;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 40px 0;
+        }
+
+        .hero-texte {
+            /* le titre et le paragraphe restent collés */
+        }
+
+        .hero-buttons {
+            margin-top: auto;
+            /* pousse uniquement les boutons en bas */
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .hero h1 {
             font-size: 4rem;
             color: var(--blanc);
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .hero p {
             font-size: 1.5rem;
             margin-bottom: 2rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .hero-buttons {
@@ -241,7 +264,7 @@
             background: var(--blanc);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
             border-top: 5px solid var(--blanc);
             display: flex;
@@ -250,7 +273,7 @@
 
         .carte-event:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
         .carte-event img {
@@ -526,7 +549,8 @@
             font-size: 1.2rem;
         }
 
-        .footer-col p, .footer-col a {
+        .footer-col p,
+        .footer-col a {
             margin-bottom: 10px;
             display: block;
             color: #aaa;
@@ -571,6 +595,7 @@
            RESPONSIVE
            ========================================= */
         @media (max-width: 1100px) {
+
             /* 3 cartes par ligne sur écrans moyens */
             .grille-evenements {
                 grid-template-columns: repeat(3, 1fr);
@@ -578,18 +603,24 @@
         }
 
         @media (max-width: 900px) {
-            .le-lieu-grid, .projet-grid {
+
+            .le-lieu-grid,
+            .projet-grid {
                 grid-template-columns: 1fr;
             }
+
             .le-lieu-images {
                 order: -1;
             }
+
             .hero h1 {
                 font-size: 2.5rem;
             }
+
             .hero p {
                 font-size: 1.2rem;
             }
+
             /* 2 cartes par ligne sur tablettes */
             .grille-evenements {
                 grid-template-columns: repeat(2, 1fr);
@@ -601,29 +632,35 @@
                 flex-direction: column;
                 gap: 15px;
             }
+
             nav ul {
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 10px;
             }
+
             .menu-toggle {
                 display: block;
                 position: absolute;
                 top: 20px;
                 right: 20px;
             }
+
             nav {
                 display: none;
                 width: 100%;
             }
+
             nav.active {
                 display: block;
             }
+
             nav ul {
                 flex-direction: column;
                 align-items: center;
                 padding-top: 15px;
             }
+
             /* 1 carte par ligne sur mobile */
             .grille-evenements {
                 grid-template-columns: 1fr;
@@ -631,13 +668,15 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- ================= HEADER ================= -->
     <header>
         <div class="container header-content">
             <div class="logo">
-                <img src="./images/470697682_578893554785595_5296946919700971899_n.jpg" alt="Logo Les Tréteaux du Collet">
+                <img src="./images/470697682_578893554785595_5296946919700971899_n.jpg"
+                    alt="Logo Les Tréteaux du Collet">
                 <span>Les Tréteaux du Collet</span>
             </div>
             <div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active')">☰</div>
@@ -647,7 +686,7 @@
                     <li><a href="#programmation">Programmation</a></li>
                     <li><a href="#le-lieu">Le Lieu</a></li>
                     <li><a href="#projet">Soutenir le projet</a></li>
-               
+
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -655,16 +694,19 @@
     </header>
 
     <!-- ================= HERO ================= -->
-    <section id="accueil" class="hero">
-        <div class="hero-content">
+
+   <section id="accueil" class="hero">
+    <div class="hero-content">
+        <div class="hero-texte">
             <h1>Un théâtre vivant en Cévennes</h1>
             <p>Spectacles, rencontres et culture au cœur des Tréteaux du Collet.</p>
-            <div class="hero-buttons">
-                <a href="#programmation" class="btn btn-jaune">Voir la programmation</a>
-                <a href="#projet" class="btn btn-jaune">Soutenir le rachat</a>
-            </div>
         </div>
-    </section>
+        <div class="hero-buttons">
+            <a href="#programmation" class="btn btn-jaune">Voir la programmation</a>
+            <a href="#projet" class="btn btn-jaune">Soutenir le rachat</a>
+        </div>
+    </div>
+</section>
 
     <!-- ================= PROGRAMMATION ================= -->
     <section id="programmation" class="programmation">
@@ -675,7 +717,8 @@
             <h3 class="mois-titre">Octobre 2026</h3>
             <div class="grille-evenements">
                 <div class="carte-event">
-                    <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Sce%CC%80ne%20ouverte.jpg" alt="Affiche Scène Ouverte" onclick="openLightbox(this.src, this.alt)">
+                    <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Sce%CC%80ne%20ouverte.jpg"
+                        alt="Affiche Scène Ouverte" onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 2 - 20h30</div>
                         <h4 class="carte-event-titre">Scène Ouverte</h4>
@@ -685,7 +728,8 @@
                 </div>
 
                 <div class="carte-event">
-                    <img src="./images/Histoire%201.jpg" alt="Affiche Octobre" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Histoire%201.jpg" alt="Affiche Octobre"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 9 - 19h</div>
                         <h4 class="carte-event-titre">La question de la propriété</h4>
@@ -695,7 +739,8 @@
                 </div>
 
                 <div class="carte-event">
-                    <img src="./images/838403766_1134032125952496_2945894586115332780_n.jpg" alt="Affiche Théâtre Opprimés" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/838403766_1134032125952496_2945894586115332780_n.jpg"
+                        alt="Affiche Théâtre Opprimés" onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Sam. 17 & Dim. 18</div>
                         <h4 class="carte-event-titre">STAGE Théâtre-Forum</h4>
@@ -712,9 +757,10 @@
                         <span class="carte-event-tag">Atelier</span>
                     </div>
                 </div>
-                
+
                 <div class="carte-event">
-                    <img src="./images/825286566_1134039902618385_542225041952631897_n.jpg" alt="Affiche Octobre" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/825286566_1134039902618385_542225041952631897_n.jpg" alt="Affiche Octobre"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 31 - 20h30</div>
                         <h4 class="carte-event-titre">CHTOLÔGO</h4>
@@ -728,7 +774,8 @@
             <h3 class="mois-titre">Septembre 2026</h3>
             <div class="grille-evenements">
                 <div class="carte-event">
-                    <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Sce%CC%80ne%20ouverte.jpg" alt="Affiche Scène Ouverte" onclick="openLightbox(this.src, this.alt)">
+                    <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Sce%CC%80ne%20ouverte.jpg"
+                        alt="Affiche Scène Ouverte" onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 4 - 20h30</div>
                         <h4 class="carte-event-titre">Scène Ouverte</h4>
@@ -746,7 +793,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/Septembre%203.jpg" alt="Affiche Septembre 3" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Septembre%203.jpg" alt="Affiche Septembre 3"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 11 - 21h</div>
                         <h4 class="carte-event-titre">Madame Pan et ses Troglydytes</h4>
@@ -755,7 +803,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/Septembre%204.jpg" alt="Affiche Septembre 4" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Septembre%204.jpg" alt="Affiche Septembre 4"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Mercredi 16 - 18h30</div>
                         <h4 class="carte-event-titre">CINÉ-PHILO</h4>
@@ -764,7 +813,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/792585231_1103110735711302_2362863429566822929_n.jpg" alt="Affiche Septembre" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/792585231_1103110735711302_2362863429566822929_n.jpg" alt="Affiche Septembre"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 19 - 21h</div>
                         <h4 class="carte-event-titre">JEWA (rap-ragga)</h4>
@@ -782,7 +832,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/797625286_1120553637300345_75986086404492470_n.jpg" alt="Affiche Arpentage" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/797625286_1120553637300345_75986086404492470_n.jpg" alt="Affiche Arpentage"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Mercredi 23 - 18h-20h</div>
                         <h4 class="carte-event-titre">ARPENTAGE du livre "Résister"</h4>
@@ -873,16 +924,19 @@
             <h3 class="mois-titre">Juillet 2026</h3>
             <div class="grille-evenements">
                 <div class="carte-event">
-                    <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Sce%CC%80ne%20ouverte.jpg" alt="Affiche Scène Ouverte" onclick="openLightbox(this.src, this.alt)">
+                    <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Sce%CC%80ne%20ouverte.jpg"
+                        alt="Affiche Scène Ouverte" onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 3 - 21h</div>
                         <h4 class="carte-event-titre">Scène Ouverte</h4>
-                        <p class="carte-event-desc">10 minutes pour entrer dans l'histoire. Venez nombreux partager un moment unique.</p>
+                        <p class="carte-event-desc">10 minutes pour entrer dans l'histoire. Venez nombreux partager un
+                            moment unique.</p>
                         <span class="carte-event-tag">Théâtre</span>
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/Juillet%202.jpg" alt="Affiche Juillet 2" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Juillet%202.jpg" alt="Affiche Juillet 2"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 4 - 21h</div>
                         <h4 class="carte-event-titre">Soirée ESSEIROT</h4>
@@ -891,7 +945,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/Juillet%203.jpg" alt="Affiche Juillet 3" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Juillet%203.jpg" alt="Affiche Juillet 3"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Mercredi 8 - 21h</div>
                         <h4 class="carte-event-titre">Fanfare Le Grand Boucan</h4>
@@ -900,7 +955,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/Juillet%204.jpg" alt="Affiche Juillet 4" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Juillet%204.jpg" alt="Affiche Juillet 4"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 10 - 21h</div>
                         <h4 class="carte-event-titre">Concert Poétique</h4>
@@ -909,7 +965,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/juillet%205.jpg" alt="Affiche Juillet 5" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/juillet%205.jpg" alt="Affiche Juillet 5"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 11 - 21h</div>
                         <h4 class="carte-event-titre">Matin Brun</h4>
@@ -918,7 +975,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/Juillet%201.jpg" alt="Affiche Juillet 1" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Juillet%201.jpg" alt="Affiche Juillet 1"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Samedi 18 - 20h</div>
                         <h4 class="carte-event-titre">Histoires & Chansons de nos Montagnes</h4>
@@ -927,7 +985,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/Juillet%202.jpg" alt="Affiche Juillet 2" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Juillet%202.jpg" alt="Affiche Juillet 2"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Jeudi 23 - 21h</div>
                         <h4 class="carte-event-titre">Délires Flagrants</h4>
@@ -936,7 +995,8 @@
                     </div>
                 </div>
                 <div class="carte-event">
-                    <img src="./images/Juillet%203.jpg" alt="Affiche Juillet 3" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Juillet%203.jpg" alt="Affiche Juillet 3"
+                        onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
                         <div class="carte-event-date">Vendredi 24 - 21h</div>
                         <h4 class="carte-event-titre">Concert Jazz Swing Pulse</h4>
@@ -955,14 +1015,21 @@
             <div class="le-lieu-grid">
                 <div class="le-lieu-texte">
                     <h3>Un mas familial, un lieu culturel</h3>
-                    <p>Le Collet, c'est un mas familial qui est aussi depuis 15 ans un lieu culturel et de rencontre en Hautes Cévennes (les Tréteaux du Collet).</p>
-                    <p>Anne et Denis Coutaudier ont créé et animé pendant de nombreuses années cet endroit à part, un peu pirate et très libre. Des habitants de la vallée (et d'un peu plus loin) se plaisent à fréquenter cet espace atypique.</p>
-                    <p>Depuis 2025, l'association <strong>Les Amis des Tréteaux</strong> propose une programmation foisonnante : théâtre, ateliers, chorale, concerts, cinéma, jeux de société...</p>
-                    <p>Aujourd'hui, Le Collet est en vente. Un petit groupe d'habitants du coin souhaite que cet endroit perdure, fidèle à l'esprit qui l'anime depuis sa création.</p>
+                    <p>Le Collet, c'est un mas familial qui est aussi depuis 15 ans un lieu culturel et de rencontre en
+                        Hautes Cévennes (les Tréteaux du Collet).</p>
+                    <p>Anne et Denis Coutaudier ont créé et animé pendant de nombreuses années cet endroit à part, un
+                        peu pirate et très libre. Des habitants de la vallée (et d'un peu plus loin) se plaisent à
+                        fréquenter cet espace atypique.</p>
+                    <p>Depuis 2025, l'association <strong>Les Amis des Tréteaux</strong> propose une programmation
+                        foisonnante : théâtre, ateliers, chorale, concerts, cinéma, jeux de société...</p>
+                    <p>Aujourd'hui, Le Collet est en vente. Un petit groupe d'habitants du coin souhaite que cet endroit
+                        perdure, fidèle à l'esprit qui l'anime depuis sa création.</p>
                 </div>
                 <div class="le-lieu-images">
-                    <img src="./images/Histoire%202.jpg" alt="Le mas du Collet dans les Cévennes" onclick="openLightbox(this.src, this.alt)">
-                    <img src="./images/Histoire%201.jpg" alt="Vue historique des Tréteaux du Collet" onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Histoire%202.jpg" alt="Le mas du Collet dans les Cévennes"
+                        onclick="openLightbox(this.src, this.alt)">
+                    <img src="./images/Histoire%201.jpg" alt="Vue historique des Tréteaux du Collet"
+                        onclick="openLightbox(this.src, this.alt)">
                 </div>
             </div>
         </div>
@@ -972,55 +1039,68 @@
     <section id="projet" class="projet">
         <div class="container">
             <h2>Pour le Collet des Tréteaux</h2>
-            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px; color: #ccc;">Pour que ce lieu vive, pour qu'il reste accessible à toutes et tous... Nous avons besoin de vous !</p>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px; color: #ccc;">Pour que ce lieu vive,
+                pour qu'il reste accessible à toutes et tous... Nous avons besoin de vous !</p>
 
             <div class="projet-grid">
                 <div class="projet-texte">
                     <h3>Le Projet</h3>
-                    <p><strong>Côté scène :</strong> permettre à l'association des Amis des Tréteaux de maintenir ses activités.</p>
-                    <p><strong>Côté mas :</strong> proposer plusieurs nouveaux logements. Denis, qui souhaite rester, pourra être locataire à vie sur les lieux.</p>
-                    <p><strong>Notre objectif :</strong> Récolter, sous forme de dons, la somme nécessaire pour acheter Le Collet en propriété collective. Cela se fera en deux temps :</p>
+                    <p><strong>Côté scène :</strong> permettre à l'association des Amis des Tréteaux de maintenir ses
+                        activités.</p>
+                    <p><strong>Côté mas :</strong> proposer plusieurs nouveaux logements. Denis, qui souhaite rester,
+                        pourra être locataire à vie sur les lieux.</p>
+                    <p><strong>Notre objectif :</strong> Récolter, sous forme de dons, la somme nécessaire pour acheter
+                        Le Collet en propriété collective. Cela se fera en deux temps :</p>
                     <ul>
-                        <li>Mi-juillet 2026 : réunir 15.000€ pour la signature du compromis de vente. <span style="color: var(--vert); font-weight: bold;">FAIT !</span></li>
+                        <li>Mi-juillet 2026 : réunir 15.000€ pour la signature du compromis de vente. <span
+                                style="color: var(--vert); font-weight: bold;">FAIT !</span></li>
                         <li>Septembre 2027 : rassembler 137.000€, prix d'achat du bien avec les frais.</li>
                     </ul>
                     <p>On compte sur vous dès maintenant pour nous aider à réunir les fonds !</p>
-                    
+
                     <div class="barre-progression">
                         <div class="barre-remplie" style="width: 15%;">15 000 € / 137 000 €</div>
                     </div>
-                    <p style="text-align: right; font-size: 0.9rem; color: var(--jaune);">Objectif : 137 000 € pour Septembre 2027</p>
+                    <p style="text-align: right; font-size: 0.9rem; color: var(--jaune);">Objectif : 137 000 € pour
+                        Septembre 2027</p>
 
                     <h3 style="margin-top: 30px;">Comment puis-je donner ?</h3>
                     <ul>
-                        <li>Via notre page HelloAsso : <a href="#" style="color: var(--vert); text-decoration: underline;">Lien vers la collecte</a></li>
+                        <li>Via notre page HelloAsso : <a href="#"
+                                style="color: var(--vert); text-decoration: underline;">Lien vers la collecte</a></li>
                         <li>En espèces ou chèque à l'ordre de : « association Les Communs de la Cèze ».</li>
                         <li>Par virement (demandez-nous notre RIB).</li>
                         <li>Par CB (terminal accessible aux Tréteaux).</li>
                     </ul>
-                    <p><em>Les versements sont à faire auprès de l'un des membres fondateurs de l'association. Un reçu vous sera délivré en retour. Même un petit don, c'est beaucoup pour nous !</em></p>
+                    <p><em>Les versements sont à faire auprès de l'un des membres fondateurs de l'association. Un reçu
+                            vous sera délivré en retour. Même un petit don, c'est beaucoup pour nous !</em></p>
                 </div>
 
                 <div class="faq-box">
                     <h3 style="color: var(--rose); margin-bottom: 20px;">Foire Aux Questions</h3>
-                    
+
                     <h4>Pourquoi ne pas faire un prêt bancaire ?</h4>
                     <p>Parce que nous n'envisageons déjà de solliciter la banque lors de la 2nde phase du projet.</p>
-                    
+
                     <h4>Que se passe-t-il si les dons ne suffisent pas ?</h4>
                     <p>Notre plan B : des prêts à taux 0 auprès d'amis.</p>
-                    
+
                     <h4>Que se passe-t-il si l'acquisition du Collet échoue ?</h4>
-                    <p>Si je souhaite être remboursé, je pourrai en faire la demande. Dans tous les cas : les frais déjà engagés sont couverts par les donateurs initiaux, membres fondateurs de l'association.</p>
-                    
+                    <p>Si je souhaite être remboursé, je pourrai en faire la demande. Dans tous les cas : les frais déjà
+                        engagés sont couverts par les donateurs initiaux, membres fondateurs de l'association.</p>
+
                     <h4>Comment puis-je m'impliquer autrement ?</h4>
-                    <p>En faisant passer le message autour de moi. Et en rejoignant les groupes de travail de l'association. Bienvenue !</p>
-                    
+                    <p>En faisant passer le message autour de moi. Et en rejoignant les groupes de travail de
+                        l'association. Bienvenue !</p>
+
                     <h4>Qu'est-ce que la propriété collective sans but lucratif ?</h4>
-                    <p>Elle désigne un bien qui appartient conjointement à un groupe de personnes plutôt qu'à un individu. Les membres de l'association, réunis en Assemblée Générale, sont responsables de la bonne administration du bien, décident des usages et garantissent qu'il ne soit pas revendu. Ce système s'oppose à la propriété privée et exclusive.</p>
+                    <p>Elle désigne un bien qui appartient conjointement à un groupe de personnes plutôt qu'à un
+                        individu. Les membres de l'association, réunis en Assemblée Générale, sont responsables de la
+                        bonne administration du bien, décident des usages et garantissent qu'il ne soit pas revendu. Ce
+                        système s'oppose à la propriété privée et exclusive.</p>
                 </div>
             </div>
-            
+
     </section>
 
 
@@ -1033,8 +1113,13 @@
                     <p>Un lieu culturel et de rencontre en Cévennes.</p>
                     <p>Association Les Communs de la Cèze</p>
                     <div class="social-icons">
-                        <a href="https://www.facebook.com/lestreteauxducollet" target="_blank" title="Suivez-nous sur Facebook">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                        <a href="https://www.facebook.com/lestreteauxducollet" target="_blank"
+                            title="Suivez-nous sur Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -1054,7 +1139,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Les Tréteaux du Collet. Tous droits réservés. | Imprimé par nos soins. Ne pas jeter sur la voie publique.</p>
+                <p>&copy; 2026 Les Tréteaux du Collet. Tous droits réservés. | Imprimé par nos soins. Ne pas jeter sur
+                    la voie publique.</p>
             </div>
         </div>
     </footer>
@@ -1105,11 +1191,11 @@
             const lightbox = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
             const caption = document.getElementById('lightbox-caption');
-            
+
             img.src = src;
             img.alt = alt;
             caption.textContent = alt;
-            
+
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -1121,11 +1207,12 @@
         }
 
         // Fermer la lightbox avec la touche Échap
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeLightbox();
             }
         });
     </script>
 </body>
+
 </html>
