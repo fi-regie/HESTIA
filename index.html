@@ -229,10 +229,11 @@
             letter-spacing: 2px;
         }
 
+        /* --- MODIFICATION : 4 cartes par ligne --- */
         .grille-evenements {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
             margin-bottom: 40px;
         }
 
@@ -254,7 +255,7 @@
 
         .carte-event img {
             width: 100%;
-            height: 250px;
+            height: 200px;
             object-fit: cover;
             background-color: #ddd;
             cursor: pointer;
@@ -270,18 +271,18 @@
         .carte-event-date {
             font-weight: bold;
             color: var(--rose);
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin-bottom: 5px;
         }
 
         .carte-event-titre {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             margin-bottom: 10px;
             color: var(--noir);
         }
 
         .carte-event-desc {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #666;
             flex-grow: 1;
         }
@@ -292,7 +293,7 @@
             color: var(--noir);
             padding: 3px 10px;
             border-radius: 15px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             margin-top: 10px;
             align-self: flex-start;
@@ -603,6 +604,13 @@
         /* =========================================
            RESPONSIVE
            ========================================= */
+        @media (max-width: 1100px) {
+            /* 3 cartes par ligne sur écrans moyens */
+            .grille-evenements {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         @media (max-width: 900px) {
             .le-lieu-grid, .projet-grid {
                 grid-template-columns: 1fr;
@@ -615,6 +623,10 @@
             }
             .hero p {
                 font-size: 1.2rem;
+            }
+            /* 2 cartes par ligne sur tablettes */
+            .grille-evenements {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -645,6 +657,10 @@
                 flex-direction: column;
                 align-items: center;
                 padding-top: 15px;
+            }
+            /* 1 carte par ligne sur mobile */
+            .grille-evenements {
+                grid-template-columns: 1fr;
             }
         }
     </style>
