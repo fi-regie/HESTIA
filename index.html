@@ -236,6 +236,59 @@
         }
 
         /* =========================================
+           CARTE TEXTE IMAGE (NOUVELLE SECTION)
+           ========================================= */
+        .carte-texte-image {
+            padding: 60px 0;
+            background-color: var(--gris-clair);
+        }
+
+        .carte-blanche {
+            background: var(--blanc);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid var(--rose);
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .carte-blanche h2 {
+            text-align: left;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .carte-blanche h2::after {
+            display: none;
+        }
+
+        .carte-blanche p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--texte);
+        }
+
+        .carte-blanche p:last-child {
+            margin-bottom: 0;
+        }
+
+        .carte-blanche .signature {
+            font-style: italic;
+            color: #666;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* Image dans le texte, sans bordure ni effet */
+        .carte-blanche img {
+            width: 100%;
+            margin: 1.5rem 0 0;
+            display: block;
+        }
+
+        /* =========================================
            SECTION PROGRAMMATION
            ========================================= */
         .programmation {
@@ -665,6 +718,10 @@
             .grille-evenements {
                 grid-template-columns: 1fr;
             }
+
+            .carte-blanche {
+                padding: 25px;
+            }
         }
     </style>
 </head>
@@ -707,6 +764,21 @@
         </div>
     </div>
 </section>
+
+    <!-- ================= CARTE TEXTE IMAGE (NOUVELLE SECTION) ================= -->
+    <section class="carte-texte-image">
+        <div class="container">
+            <div class="carte-blanche">
+                <h2>Le Collet, un lieu à préserver</h2>
+                <p>Depuis 15 ans, le mas du Collet en Hautes Cévennes est un espace culturel et de rencontre unique, animé par Anne et Denis Coutaudier. Aujourd'hui, ce lieu est en vente. Un groupe d'habitants souhaite le racheter collectivement pour pérenniser son esprit libre et pirate.</p>
+                <p>L'association <strong>Les Amis des Tréteaux</strong> propose une programmation foisonnante : théâtre, ateliers, chorale, concerts, cinéma, jeux de société...</p>
+                <p>Pour que ce lieu vive et reste accessible à toutes et tous, nous avons besoin de vous. Récoltons ensemble les fonds nécessaires pour acheter Le Collet en propriété collective.</p>
+
+                <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/il%20y%20a%20eu.jpg"
+                    alt="Il y a eu... Les Tréteaux du Collet">
+            </div>
+        </div>
+    </section>
 
     <!-- ================= PROGRAMMATION ================= -->
     <section id="programmation" class="programmation">
