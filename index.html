@@ -42,6 +42,7 @@
             --bg-projet-box: #2a2a2a;
             --bg-footer: #1e1e1e;
             --bg-lightbox: rgba(0, 0, 0, 0.9);
+            --bg-modal: #ffffff;
             --texte-principal: #333333;
             --texte-secondaire: #666666;
             --texte-clair: #ffffff;
@@ -65,6 +66,7 @@
             --bg-projet-box: #2b2f33;
             --bg-footer: #1a1d1f;
             --bg-lightbox: rgba(0, 0, 0, 0.95);
+            --bg-modal: #3a3f44;
             --texte-principal: #e9ecef;
             --texte-secondaire: #adb5bd;
             --texte-clair: #f8f9fa;
@@ -204,7 +206,8 @@
         .carte-event img,
         .social-icons a,
         .footer-bottom,
-        .carte-blanche .signature {
+        .carte-blanche .signature,
+        .modal-contenu {
             transition: var(--transition-theme);
         }
 
@@ -617,6 +620,29 @@
             align-self: flex-start;
         }
 
+        /* Bouton "En savoir plus" dans les cartes événement */
+        .btn-info-event {
+            display: inline-block;
+            margin-top: 0.9375rem;
+            padding: 0.4rem 0.9rem;
+            background-color: var(--rose);
+            color: var(--blanc);
+            border: none;
+            border-radius: 1.25rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            align-self: flex-start;
+            font-family: var(--font-texte);
+        }
+
+        .btn-info-event:hover {
+            background-color: var(--rose-fonce);
+            transform: translateY(-0.125rem);
+        }
+
         /* =========================================
            SECTION LE LIEU
            ========================================= */
@@ -847,6 +873,144 @@
         }
 
         /* =========================================
+           MODAL (APERÇU)
+           ========================================= */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2100;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            justify-content: center;
+            align-items: center;
+            padding: 1.25rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-contenu {
+            background: var(--bg-modal);
+            color: var(--texte-principal);
+            border-radius: 0.625rem;
+            max-width: 55rem;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease, background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .modal.active .modal-contenu {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            color: var(--texte-secondaire);
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+            background: none;
+            border: none;
+            padding: 0;
+            font-family: var(--font-texte);
+        }
+
+        .modal-close:hover {
+            color: var(--rose);
+        }
+
+        body.dark-mode .modal-close {
+            color: var(--texte-secondaire);
+        }
+
+        body.dark-mode .modal-close:hover {
+            color: var(--rose);
+        }
+
+        .modal-contenu h2 {
+            text-align: left;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--rose);
+            padding-right: 2.5rem;
+        }
+
+        .modal-contenu h2::after {
+            display: none;
+        }
+
+        .modal-contenu h3 {
+            font-size: 1.4rem;
+            color: var(--noir);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: var(--font-titre);
+        }
+
+        body.dark-mode .modal-contenu h3 {
+            color: var(--texte-clair);
+        }
+
+        .modal-contenu p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            color: var(--texte-secondaire);
+            line-height: 1.7;
+        }
+
+        .modal-contenu ul {
+            list-style: none;
+            margin-bottom: 1.25rem;
+            padding-left: 0;
+        }
+
+        .modal-contenu ul li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--texte-secondaire);
+            font-size: 1.05rem;
+        }
+
+        .modal-contenu ul li::before {
+            content: '•';
+            color: var(--rose);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .modal-contenu strong {
+            color: var(--noir);
+        }
+
+        body.dark-mode .modal-contenu strong {
+            color: var(--texte-clair);
+        }
+
+        .modal-contenu em {
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================================
            FOOTER
            ========================================= */
         footer {
@@ -996,6 +1160,18 @@
             .carte-blanche {
                 padding: 1.5625rem;
             }
+
+            .modal-contenu {
+                padding: 1.5625rem;
+            }
+
+            .modal-contenu h2 {
+                font-size: 1.4rem;
+            }
+
+            .modal-contenu h3 {
+                font-size: 1.15rem;
+            }
         }
     </style>
 </head>
@@ -1067,7 +1243,6 @@
                     <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Prog%20Octobre.jpg"
                         alt="Programmation Octobre 2026" onclick="openLightbox(this.src, this.alt)">
                 </div>
-
                 <div class="carte-event">
                     <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Sce%CC%80ne%20ouverte.jpg"
                         alt="Affiche Scène Ouverte" onclick="openLightbox(this.src, this.alt)">
@@ -1078,7 +1253,6 @@
                         <span class="carte-event-tag">Théâtre</span>
                     </div>
                 </div>
-
                 <div class="carte-event">
                     <img src="./images/Histoire%201.jpg" alt="Affiche Octobre"
                         onclick="openLightbox(this.src, this.alt)">
@@ -1087,9 +1261,9 @@
                         <h4 class="carte-event-titre">La question de la propriété</h4>
                         <p class="carte-event-desc">Repas (sur réservation) + Film + Débat.</p>
                         <span class="carte-event-tag">Débat</span>
+                        <button class="btn-info-event" onclick="openModal('modal-propriete')">En savoir plus</button>
                     </div>
                 </div>
-
                 <div class="carte-event">
                     <img src="./images/838403766_1134032125952496_2945894586115332780_n.jpg"
                         alt="Affiche Théâtre Opprimés" onclick="openLightbox(this.src, this.alt)">
@@ -1098,9 +1272,9 @@
                         <h4 class="carte-event-titre">STAGE Théâtre-Forum</h4>
                         <p class="carte-event-desc">Théâtre des Opprimés. Un outil de dialogue communautaire.</p>
                         <span class="carte-event-tag">Stage</span>
+                        <button class="btn-info-event" onclick="openModal('modal-stage')">En savoir plus</button>
                     </div>
                 </div>
-
                 <div class="carte-event">
                     <img src="./images/Echec.jpg" alt="Affiche ÉCHECS" onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
@@ -1110,7 +1284,6 @@
                         <span class="carte-event-tag">Atelier</span>
                     </div>
                 </div>
-                
                 <div class="carte-event">
                     <img src="./images/825286566_1134039902618385_542225041952631897_n.jpg" alt="Affiche Octobre"
                         onclick="openLightbox(this.src, this.alt)">
@@ -1153,6 +1326,7 @@
                         <h4 class="carte-event-titre">Madame Pan et ses Troglydytes</h4>
                         <p class="carte-event-desc">Théâtre. Coup de soutien aux Tréteaux.</p>
                         <span class="carte-event-tag">Théâtre</span>
+                        <button class="btn-info-event" onclick="openModal('modal-madame-pan')">En savoir plus</button>
                     </div>
                 </div>
                 <div class="carte-event">
@@ -1475,6 +1649,108 @@
         <p id="lightbox-caption" class="lightbox-caption"></p>
     </div>
 
+    <!-- ================= MODAL : LA QUESTION DE LA PROPRIÉTÉ ================= -->
+    <div id="modal-propriete" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>Faire culture commune</h2>
+
+            <p>C'est la dernière mission que s'est donné l'association des Communs de la Cèze pour nous aider à appréhender le paradigme qui se cache derrière le concept de propriété collective. Tout au long de l'automne et de l'hiver, période propice à l'intériorisation et au compostage, les Tréteaux vont s'associer à cette démarche en accueillant un cycle de projections, débats, causeries, arpentage, atelier d'écriture... et autres joyeuses remue-méninges.</p>
+
+            <p>Chaque évènement sera animé par de généreux·euses intervenant·es qui mettront leurs compétences et leur savoir à notre service et tout cela dans la plus grande convivialité comme il se doit au Tréteaux.</p>
+
+            <p>Nous ouvrons le bal vendredi 9 octobre avec une soirée orchestrée par la famille Florès. Gratitude à Annette et Guy !!</p>
+
+            <h3>Au programme</h3>
+            <ul>
+                <li><strong>À 19h :</strong> Annette nous régalera d'un couscous végétarien (n'oubliez pas de réserver avant le 6). Le repas est à prix libre et la totalité des bénéfices iront dans la cagnotte du rachat des Tréteaux du Collet.</li>
+                <li><strong>À 20h30 :</strong> Guy sera aux manettes d'un débat sur les Communs qui suivra la projection du reportage d'Arte questionnant la théorie de Garett Hardin : « Est-il vrai que la propriété collective mène toujours à l'échec ? »</li>
+            </ul>
+
+            <p><strong>Réservation repas au 06 37 93 88 37 jusqu'au mercredi 6 dernier carat</strong> pour qu'Annette puisse œuvrer en connaissance de cause.</p>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : STAGE THÉÂTRE-FORUM ================= -->
+    <div id="modal-stage" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>Le théâtre participatif, un outil de dialogue communautaire</h2>
+
+            <p>Le Théâtre des opprimé·es (TDO) est un ensemble de techniques de théâtre participatif qui visent à faciliter le dialogue communautaire autour de thématiques sociales. Il invite les participant·es à prendre une part active dans l'analyse des situations et dans la recherche collective d'actions transformatrices.</p>
+
+            <p>L'objectif de ce stage est de permettre aux participant·es de développer une véritable boîte à outils, qu'iels pourront mobiliser au sein de leur communauté ou de leur groupe, afin d'analyser et de transformer collectivement des situations qu'iels souhaitent voir évoluer et ne plus reproduire.</p>
+
+            <p>Dans un premier temps, il s'agira de découvrir les différentes techniques du Théâtre des opprimé·es, de les expérimenter et de se les approprier. Cette première étape permettra ensuite aux participant·es de pouvoir les mettre en pratique, de les transmettre et de les utiliser pour accompagner des dynamiques collectives.</p>
+
+            <h3>Contenu théorique</h3>
+            <ul>
+                <li>L'arbre du Théâtre des opprimé·es : découvrir les fondements du TDO : les jeux, le théâtre-image et le théâtre-forum.</li>
+                <li>Les outils de recherche empirique : explorer le théâtre de l'invisible et le théâtre journalistique.</li>
+                <li>Le TDO comme outil de dialogue communautaire : comprendre comment mobiliser ces techniques pour favoriser la réflexion et l'action collectives.</li>
+                <li>Le positionnement de la personne facilitatrice (le·la joker) : explorer son rôle, sa posture et les responsabilités qui lui incombent dans l'accompagnement d'un groupe.</li>
+            </ul>
+
+            <h3>Contenu pratique</h3>
+            <ul>
+                <li>Participer à un atelier de théâtre-image, puis expérimenter sa mise en place et son animation.</li>
+                <li>Faciliter une analyse collective à partir du théâtre-image.</li>
+                <li>Construire une scénette de théâtre journalistique.</li>
+                <li>Créer une pièce de théâtre-forum.</li>
+                <li>Accompagner un groupe dans la création d'une pièce de théâtre-forum.</li>
+                <li>Faciliter une réflexion collective autour d'une pièce de théâtre-forum.</li>
+            </ul>
+
+            <h3>À qui s'adresse ce stage ?</h3>
+            <p>Ce stage s'adresse à toute personne souhaitant développer des outils ludiques et participatifs pour accompagner le dialogue au sein d'un groupe ou d'une communauté.</p>
+            <p>Ces outils de théâtre participatif peuvent être mobilisés aussi bien pour analyser des situations conflictuelles, injustes ou oppressives que pour imaginer et expérimenter collectivement des alternatives.</p>
+            <p>Aucun prérequis théâtral n'est nécessaire. Le stage repose avant tout sur l'expérimentation, le partage des expériences et la construction collective des savoirs.</p>
+
+            <h3>Déroulement du stage</h3>
+            <p>Tout au long du stage, nous construirons collectivement une pièce de théâtre-forum autour de la thématique de l'habiter.</p>
+            <p>Ce processus nous permettra de traverser les différentes étapes de création d'une pièce de théâtre-forum, tout en explorant les outils de facilitation. Chaque participant·e pourra ainsi expérimenter différentes postures : celle de participant·e, impliqué·e dans le processus de création, et celle de facilitateur·ice, accompagnant le groupe dans sa réflexion et sa construction collective.</p>
+            <p>Nous nous retrouverons un week-end par mois. Chaque rencontre sera l'occasion de poursuivre la création de la pièce, d'approfondir la découverte des outils du Théâtre des opprimé·es et de développer progressivement les compétences nécessaires à la facilitation.</p>
+
+            <h3>Horaire et organisation</h3>
+            <ul>
+                <li>Samedi et dimanche : 9h30-13h / 14h30-18h</li>
+                <li>Chacun.e ramène quelque chose à partager pour le repas de midi. Une cuisine est disponible sur place.</li>
+                <li>Possibilité de dormir sur place.</li>
+            </ul>
+
+            <h3>Participation financière</h3>
+            <ul>
+                <li>100€ / un week-end</li>
+                <li>Tarif solidaire : 230€ / 3 week-ends</li>
+            </ul>
+
+            <h3>Week-ends de travail</h3>
+            <ul>
+                <li>17-18 octobre</li>
+                <li>14-15 novembre</li>
+                <li>5-6 décembre</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : MADAME PAN ET SES TROGLYDYTES ================= -->
+    <div id="modal-madame-pan" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>Soirée mensuelle de soutien au rachat des Tréteaux !</h2>
+
+            <p>Tous les 2ème vendredis du mois un·e ou des artistes vont offrir une représentation pour participer au financement du rachat collectif des Tréteaux.</p>
+
+            <p>Tous les bénéfices de ces soirées, entrées seront versées intégralement à la cagnotte du Collet.</p>
+
+            <p>Pour l'occasion, un buffet à prix libre avec une farandole de plats salés et sucrés sera proposé à partir de 19h30.</p>
+
+            <p>Ce mois-ci nous accueillons Mireille Huchon pour contribuer à cette folle aventure.</p>
+
+            <p><strong>Un grand merci à elle !!</strong></p>
+        </div>
+    </div>
+
     <!-- ================= SCRIPT ================= -->
     <script>
         // ================= GESTION DU THÈME (MODE CLAIR PAR DÉFAUT) =================
@@ -1482,19 +1758,15 @@
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
 
-            // Récupérer uniquement le choix explicite de l'utilisateur
             const savedTheme = localStorage.getItem('theme');
 
-            // Mode clair par défaut : on n'active le mode sombre QUE si l'utilisateur l'a explicitement choisi
             if (savedTheme === 'dark') {
                 body.classList.add('dark-mode');
                 updateThemeButton(true);
             } else {
-                // Mode clair (par défaut, ou choix explicite "light")
                 updateThemeButton(false);
             }
 
-            // Mettre à jour le bouton (icône et texte)
             function updateThemeButton(isDark) {
                 if (isDark) {
                     themeToggle.innerHTML = '<span class="icon">☀️</span><span class="label">Mode clair</span>';
@@ -1505,7 +1777,6 @@
                 }
             }
 
-            // Écouter le clic sur le bouton
             themeToggle.addEventListener('click', function() {
                 const isDark = body.classList.toggle('dark-mode');
                 localStorage.setItem('theme', isDark ? 'dark' : 'light');
@@ -1565,9 +1836,31 @@
             document.body.style.overflow = '';
         }
 
+        // ================= MODALS (APERÇUS) =================
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(event) {
+            // Si un événement est passé (clic sur l'arrière-plan), ne fermer que si la cible est le modal lui-même
+            if (event && event.target !== event.currentTarget) {
+                return;
+            }
+            document.querySelectorAll('.modal.active').forEach(modal => {
+                modal.classList.remove('active');
+            });
+            document.body.style.overflow = '';
+        }
+
+        // ================= GESTION DE LA TOUCHE ÉCHAP =================
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeLightbox();
+                closeModal();
             }
         });
     </script>
