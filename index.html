@@ -561,6 +561,20 @@
             cursor: pointer;
         }
 
+        /* =========================================
+           CARTE IMAGE SEULE (Programmation Octobre)
+           ========================================= */
+        .carte-event-image-seule {
+            border-top: none;
+        }
+
+        .carte-event-image-seule img {
+            height: 100%;
+            min-height: 20rem;
+            object-fit: cover;
+            margin: 0;
+        }
+
         body.dark-mode .carte-event img {
             background-color: #2b2f33;
         }
@@ -1049,6 +1063,11 @@
             <!-- Octobre -->
             <h3 class="mois-titre">Octobre 2026</h3>
             <div class="grille-evenements">
+                <div class="carte-event carte-event-image-seule">
+                    <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Prog%20Octobre.jpg"
+                        alt="Programmation Octobre 2026" onclick="openLightbox(this.src, this.alt)">
+                </div>
+
                 <div class="carte-event">
                     <img src="https://raw.githubusercontent.com/fi-regie/Les-Treteaux-du-Collet/main/images/Sce%CC%80ne%20ouverte.jpg"
                         alt="Affiche Scène Ouverte" onclick="openLightbox(this.src, this.alt)">
@@ -1059,6 +1078,7 @@
                         <span class="carte-event-tag">Théâtre</span>
                     </div>
                 </div>
+
                 <div class="carte-event">
                     <img src="./images/Histoire%201.jpg" alt="Affiche Octobre"
                         onclick="openLightbox(this.src, this.alt)">
@@ -1069,6 +1089,7 @@
                         <span class="carte-event-tag">Débat</span>
                     </div>
                 </div>
+
                 <div class="carte-event">
                     <img src="./images/838403766_1134032125952496_2945894586115332780_n.jpg"
                         alt="Affiche Théâtre Opprimés" onclick="openLightbox(this.src, this.alt)">
@@ -1079,6 +1100,7 @@
                         <span class="carte-event-tag">Stage</span>
                     </div>
                 </div>
+
                 <div class="carte-event">
                     <img src="./images/Echec.jpg" alt="Affiche ÉCHECS" onclick="openLightbox(this.src, this.alt)">
                     <div class="carte-event-contenu">
@@ -1088,6 +1110,7 @@
                         <span class="carte-event-tag">Atelier</span>
                     </div>
                 </div>
+                
                 <div class="carte-event">
                     <img src="./images/825286566_1134039902618385_542225041952631897_n.jpg" alt="Affiche Octobre"
                         onclick="openLightbox(this.src, this.alt)">
