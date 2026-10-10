@@ -625,7 +625,7 @@
             display: inline-block;
             margin-top: 0.9375rem;
             padding: 0.4rem 0.9rem;
-            background-color: 
+            background-color: var(--rose);
             color: var(--blanc);
             border: none;
             border-radius: 1.25rem;
@@ -1382,6 +1382,7 @@
                         <h4 class="carte-event-titre">Triple Scott</h4>
                         <p class="carte-event-desc">Chanson française et jazz.</p>
                         <span class="carte-event-tag">Concert</span>
+                        <button class="btn-info-event" onclick="openModal('modal-triple-scott')">En savoir plus</button>
                     </div>
                 </div>
                 <div class="carte-event">
@@ -1391,6 +1392,7 @@
                         <h4 class="carte-event-titre">Paniyiri</h4>
                         <p class="carte-event-desc">Musique grecque envoûtante.</p>
                         <span class="carte-event-tag">Musique</span>
+                        <button class="btn-info-event" onclick="openModal('modal-paniyiri')">En savoir plus</button>
                     </div>
                 </div>
                 <div class="carte-event">
@@ -1400,6 +1402,7 @@
                         <h4 class="carte-event-titre">La Mondina</h4>
                         <p class="carte-event-desc">Chanson réaliste. Concert au profit du rachat des Tréteaux.</p>
                         <span class="carte-event-tag">Concert</span>
+                        <button class="btn-info-event" onclick="openModal('modal-la-mondina')">En savoir plus</button>
                     </div>
                 </div>
                 <div class="carte-event">
@@ -1409,6 +1412,7 @@
                         <h4 class="carte-event-titre">Zeuplèce to Death / Le Discours du Chef Seattle</h4>
                         <p class="carte-event-desc">Clown puis causerie avec Eric Derrien.</p>
                         <span class="carte-event-tag">Théâtre</span>
+                        <button class="btn-info-event" onclick="openModal('modal-zeuplace')">En savoir plus</button>
                     </div>
                 </div>
                 <div class="carte-event">
@@ -1418,6 +1422,7 @@
                         <h4 class="carte-event-titre">Nomade</h4>
                         <p class="carte-event-desc">Dîner / Chanson française.</p>
                         <span class="carte-event-tag">Concert</span>
+                        <button class="btn-info-event" onclick="openModal('modal-nomade')">En savoir plus</button>
                     </div>
                 </div>
                 <div class="carte-event">
@@ -1427,6 +1432,7 @@
                         <h4 class="carte-event-titre">Marie Baxerres</h4>
                         <p class="carte-event-desc">Chanson "Raw and Wild".</p>
                         <span class="carte-event-tag">Concert</span>
+                        <button class="btn-info-event" onclick="openModal('modal-marie-baxerres')">En savoir plus</button>
                     </div>
                 </div>
                 <div class="carte-event">
@@ -1436,6 +1442,7 @@
                         <h4 class="carte-event-titre">On l'a brun mérité</h4>
                         <p class="carte-event-desc">Théâtre par le Collectif Lakolok.</p>
                         <span class="carte-event-tag">Théâtre</span>
+                        <button class="btn-info-event" onclick="openModal('modal-on-la-brun-merite')">En savoir plus</button>
                     </div>
                 </div>
             </div>
@@ -1750,6 +1757,114 @@
             <p>Ce mois-ci nous accueillons Mireille Huchon pour contribuer à cette folle aventure.</p>
 
             <p><strong>Un grand merci à elle !!</strong></p>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : MARIE BAXERRES ================= -->
+    <div id="modal-marie-baxerres" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>Chansons Raw and Wild</h2>
+
+            <p>A la frontière de la performance et de la musique, Marie Baxerres joue des chansons minimales, plutôt pop, parfois absurdes, parfois bruitistes, qui misent aussi bien sur la joie enfantine que sur l'incertitude.</p>
+
+            <p>Ses chansons sont à la fois accrocheuses et aventureuses, parfois très mélodiques ou dissonantes, parfois bruyantes ou douces, sucré-salé, plaisir hédoniste et danger cathartique...</p>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : ON L'A BRUN MÉRITÉ ================= -->
+    <div id="modal-on-la-brun-merite" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>On L'a Brun Mérité - Collectif Lakolok</h2>
+
+            <p>Dans un monde où l’ambiance est un peu plombée, comme on dit, des voix manifestent leur envie de résister. On ne saurait dire d’où et de quand surgissent ces singuliers personnages... Mais l’heureuse complicité qui se dégage de cette équipe nous invite à nous laisser porter par sa simplicité, sa sincérité et son enthousiasme à témoigner. Dans une libre adaptation et interprétation de textes, de chansons et de citations, ils nous présentent une lecture avertie d’hier et d’aujourd’hui.</p>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : NOMADE ================= -->
+    <div id="modal-nomade" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>Nomade</h2>
+
+            <p>Oyez, oyez!</p>
+            <p>Vendredi 21, le groupe Nomade posera ses valises aux Tréteaux le temps d'un concert dédié aux monuments de la chanson française mais pas que...</p>
+            <ul>
+                <li>Restauration à la bonne franquette partir de 19h : saucisses, merguez, frites et glaces !</li>
+                <li>Concert à 21h</li>
+            </ul>
+            <p>Pas besoin de réserver, venez comme vous êtes c'est comme ça qu'on vous aime !</p>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : ZEUPLÈCE TO DEATH / LE DISCOURS DU CHEF SEATTLE ================= -->
+    <div id="modal-zeuplace" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>Zeuplèce to Death / Le Discours du Chef Seattle</h2>
+
+            <p>Quand il fut prononcé en 1854, ce discours d’un chef indien connut diverses traductions par des missionnaires et par des militaires. Il s’en suivit deux formes de censures, l’une religieuse, l’autre stratégique.</p>
+
+            <p>« Apprenez à vos enfants ce que nous avons toujours appris aux nôtres, que la terre est notre mère et que ce qui advient à la terre, advient aux fils de la terre. »</p>
+
+            <p>Eric Derrien s’est documenté depuis des années sur les différentes versions du texte du chef Seattle et a essayé de nous retranscrire une version sans influence militaire ou religieuse.</p>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : LA MONDINA ================= -->
+    <div id="modal-la-mondina" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>La Mondina</h2>
+
+            <p>La Mondina c'est un tour d'horizon d'une chanson réaliste sans frontières en mode tout terrain.</p>
+
+            <p>Un hommage à une chanson abrasive, poignante ou drôle qui se tient sur le fil du rasoir de la marge. La voix des sans voix, souvent féminine, qui met dans le swing de la java ou dans la gouaille du blues toute sa colère, son désespoir et sa rage de vivre.</p>
+
+            <p>Un monde qui pleure et qui rit mais qui ne fait ni dans la demi mesure, ni dans le politiquement correct.</p>
+
+            <p>À bon entendeur...</p>
+
+            <p><strong>Philippe Metton :</strong> guitare et accordéon</p>
+            <p><strong>Karine Frostin :</strong> chant</p>
+
+            <p><em>Les bénéfices du concert seront versés au pot collectif dédié au rachat du Collet et ses Tréteaux.</em></p>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : PANIYIRI ================= -->
+    <div id="modal-paniyiri" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>Paniyiri</h2>
+
+            <p>Paniyiri, chansons & danses de Grèce et d’Anatolie.</p>
+
+            <p>Voyage musical mené par des musiciens venus tout droit de Grèce et d’Anatolie :</p>
+            <p><strong>Markia Liapi, Stelios Pantechis, Yiannis Laoutaris et Théo Flores.</strong></p>
+
+            <p>Buvette et frites maison sur place.</p>
+        </div>
+    </div>
+
+    <!-- ================= MODAL : TRIPLE SCOTT ================= -->
+    <div id="modal-triple-scott" class="modal" onclick="closeModal(event)">
+        <div class="modal-contenu" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+            <h2>Triple Scott</h2>
+
+            <p>C’est autour de Christiane Raby que c’est créé le groupe Double Scott et Triple Scott.</p>
+
+            <p>D’origine québécoise, elle explore le jazz, la soul et le folk durant ses études musicales à Montréal, « Vanier college » en chant. En 1990, elle intègre pour plusieurs années le groupe vocal a capella La bande Magnétik. Le groupe est nominé au Félix et fait de nombreuses tournées au Québec et en Europe.</p>
+
+            <p>Auteure compositeur, elle signe en 2000 un contrat de disque avec la compagnie MusiArt et sort en 2001 l’album « Si tu passes tout droit ». En parallèle, elle fait aussi de nombreux contrats de pigistes en tant que choriste sur scène et en studio.</p>
+
+            <p>En 2003, elle s’établit en France et a depuis la double nationalité. Elle forme avec Bernard Scotti le duo qui deviendra : Double Scott. Il sortent leur premier album : « Trait d’union » en février 2011. Et un deuxième en 2014 du nom de Double Scott. Depuis quelques années ils créent : Triple Scott avec Maéva Scotti à la basse.</p>
+
+            <p>C’est donc une histoire familiale. En concert, le groupe chante les chansons de Christiane, tenté de Jazz, de Folk, et de textes qui évoquent très intelligemment et sensiblement le monde tel qu’il est. La technique vocale très assurée de Christiane, qui joue également successivement de la guitare, du piano, de la flûte traversière, est appuyée par la virtuosité de Bernard Scotti, et par la basse de Maéva qui ajoute une touche de profondeur à la musique.</p>
+
+            <p><a href="https://youtu.be/IzScF5lJZIU" target="_blank" style="color: var(--rose); text-decoration: underline;">Voir la vidéo sur YouTube</a></p>
         </div>
     </div>
 
