@@ -32,6 +32,7 @@
             --font-titre: 'Georgia', serif;
             --font-texte: 'Helvetica Neue', Arial, sans-serif;
 
+            /* Variables de thème (mode clair par défaut) */
             --bg-body: #e9ecef;
             --bg-header: #1e1e1e;
             --bg-card: #ffffff;
@@ -377,7 +378,7 @@
             background: none;
             border: none;
             color: var(--blanc);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
             padding: 0.3rem 0.7rem;
             border-radius: 2rem;
@@ -1453,21 +1454,24 @@
 
     <!-- ================= SCRIPT ================= -->
     <script>
-        // ================= GESTION DU THÈME SOMBRE =================
+        // ================= GESTION DU THÈME (MODE CLAIR PAR DÉFAUT) =================
         (function() {
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
 
+            // Récupérer uniquement le choix explicite de l'utilisateur
             const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            // Mode clair par défaut : on n'active le mode sombre QUE si l'utilisateur l'a explicitement choisi
+            if (savedTheme === 'dark') {
                 body.classList.add('dark-mode');
                 updateThemeButton(true);
             } else {
+                // Mode clair (par défaut, ou choix explicite "light")
                 updateThemeButton(false);
             }
 
+            // Mettre à jour le bouton (icône et texte)
             function updateThemeButton(isDark) {
                 if (isDark) {
                     themeToggle.innerHTML = '<span class="icon">☀️</span><span class="label">Mode clair</span>';
@@ -1478,18 +1482,11 @@
                 }
             }
 
+            // Écouter le clic sur le bouton
             themeToggle.addEventListener('click', function() {
                 const isDark = body.classList.toggle('dark-mode');
                 localStorage.setItem('theme', isDark ? 'dark' : 'light');
                 updateThemeButton(isDark);
-            });
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-                if (!localStorage.getItem('theme')) {
-                    const isDark = e.matches;
-                    body.classList.toggle('dark-mode', isDark);
-                    updateThemeButton(isDark);
-                }
             });
         })();
 
